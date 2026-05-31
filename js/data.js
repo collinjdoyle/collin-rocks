@@ -47,13 +47,12 @@ const SITE = {
     currentFocus: "Local AI on the homelab cluster + IT automation at scale",
     // neofetch-style ASCII art. Keep lines the same length-ish for clean output.
     asciiLogo: [
-      "        .--.        ",
-      "       |o_o |       ",
-      "       |:_/ |       ",
-      "      //   \\ \\      ",
-      "     (|     | )     ",
-      "    /'\\_   _/`\\     ",
-      "    \\___)=(___/     ",
+      "   ____ ____   ",
+      "  / ___|  _ \\  ",
+      " | |   | | | | ",
+      " | |___| |_| | ",
+      "  \\____|____/  ",
+      "  c o l l i n  ",
     ],
   },
 
@@ -153,8 +152,10 @@ const SITE = {
     { name: "Certified ScrumMaster (CSM)", issuer: "Scrum Alliance", year: "2025" },
   ],
 
-  // Path to your resume PDF (placeholder committed; swap the file, keep the name).
+  // Résumé PDFs. resumePdf is the 1-page default; resumePdfFull is the 2-page
+  // full-history version. Regenerate from resume/*.html (see README).
   resumePdf: "assets/resume.pdf",
+  resumePdfFull: "assets/resume-full.pdf",
 
   /* ---------------------------------------------------------------------------
      BLOG POSTS — newest first. `file` is a Markdown file in /posts.

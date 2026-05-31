@@ -306,6 +306,12 @@ h1, h2, h3 { line-height: 1.25; }
   padding: 1px 7px;
 }
 
+/* about — two-column horizontal layout */
+.about-cols { display: flex; gap: 24px; align-items: flex-start; }
+.about-left { flex: 0 0 auto; }
+.about-right { flex: 1 1 auto; min-width: 0; }
+.about-right .bio p:first-child { margin-top: 0; }
+
 /* about / neofetch */
 .neofetch { display: flex; gap: 18px; flex-wrap: wrap; }
 .neofetch__art {
@@ -349,6 +355,8 @@ h1, h2, h3 { line-height: 1.25; }
   margin: 4px 0 16px;
 }
 .btn:hover { filter: brightness(1.08); text-decoration: none; }
+.resume-full-link { display: inline-block; margin: 4px 0 16px 12px; font-size: 12px; color: var(--muted); }
+.resume-full-link:hover { color: var(--accent); }
 .job { padding: 10px 0; border-bottom: 1px dashed var(--border); }
 .job:last-child { border-bottom: none; }
 .job__head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
@@ -485,6 +493,7 @@ h1, h2, h3 { line-height: 1.25; }
   }
   .window__titlebar { cursor: default; }
   .window__resize { display: none; }
+  .about-cols { flex-direction: column; gap: 14px; }
   .terminal { min-height: 320px; }
   .terminal .window__body { min-height: 260px; }
   .workspaces { display: none; }

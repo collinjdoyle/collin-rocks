@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Collin Doyle — Résumé</title>
+<style>
+  /* ATS-safe: single column, real selectable text, standard headings,
+     no text inside tables, common fonts. Tuned to fit one US-Letter page. */
+  @page { size: letter; margin: 0.5in 0.55in; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 10.5pt;
+    line-height: 1.32;
+  }
+  a { color: #1a4f8b; text-decoration: none; }
+
+  header { text-align: center; margin-bottom: 8px; }
+  h1 { font-size: 21pt; margin: 0; letter-spacing: 0.5px; }
+  .title { font-size: 11.5pt; color: #333; margin: 2px 0 4px; font-weight: 600; }
+  .contact { font-size: 9.5pt; color: #444; }
+  .contact span { white-space: nowrap; }
+  .sep { color: #aaa; margin: 0 6px; }
+
+  h2 {
+    font-size: 10.5pt;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #1a4f8b;
+    border-bottom: 1.2px solid #1a4f8b;
+    padding-bottom: 2px;
+    margin: 12px 0 6px;
+  }
+  p { margin: 0 0 5px; }
+
+  .skills li { margin-bottom: 2px; }
+  ul { margin: 3px 0 6px; padding-left: 18px; }
+  li { margin-bottom: 2.5px; }
+
+  .job { margin-bottom: 7px; }
+  .job__head { display: flex; justify-content: space-between; align-items: baseline; }
+  .job__role { font-weight: 700; font-size: 10.7pt; }
+  .job__org { font-weight: 700; }
+  .job__meta { color: #555; font-size: 9.3pt; white-space: nowrap; }
+  .earlier { font-style: italic; color: #444; font-size: 9.6pt; margin-top: 2px; }
+  .compact { margin-bottom: 2px; }
+  strong { font-weight: 700; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>COLLIN DOYLE</h1>
+    <div class="title">Systems Administrator &amp; IT Team Lead</div>
+    <div class="contact">
+      <span>Fort Myers, FL</span><span class="sep">·</span>
+      <span><a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a></span><span class="sep">·</span>
+      <span><a href="https://www.linkedin.com/in/collinjdoyle/">linkedin.com/in/collinjdoyle</a></span><span class="sep">·</span>
+      <span><a href="https://github.com/CollinJDoyle">github.com/CollinJDoyle</a></span>
+    </div>
+  </header>
+
+  <h2>Summary</h2>
+  <p>
+    Systems administrator and IT team lead with 10+ years spanning help desk,
+    infrastructure, and cloud — now leading IT operations and a systems
+    administration team while moving toward IT management. Deep expertise in
+    Microsoft 365 / Entra ID, identity and SSO/SAML, IT automation, AWS, and
+    on-prem Kubernetes. Known for turning manual, repetitive IT work into
+    zero-touch automation and for building secure, reliable multi-site infrastructure.
+  </p>
+
+  <h2>Core Skills</h2>
+  <ul class="skills">
+    <li><strong>Leadership &amp; ITSM:</strong> Team leadership, help desk management, onboarding/offboarding, SaaS &amp; vendor management (60+ apps), Jira, IT process automation</li>
+    <li><strong>Identity &amp; M365:</strong> Microsoft 365, Entra ID, Intune, Active Directory, Exchange, SSO/SAML</li>
+    <li><strong>Cloud &amp; Infrastructure:</strong> AWS, bare-metal Kubernetes, Rancher, Docker, ArgoCD, on-prem AI</li>
+    <li><strong>Automation &amp; Dev:</strong> PowerShell, Node.js, JavaScript/TypeScript, Bash, CI/CD (GitHub Actions), Git</li>
+    <li><strong>Networking &amp; Security:</strong> TCP/IP, VPN, firewalls (Palo Alto, SonicWALL, Unifi), VOIP, uptime monitoring (BetterStack)</li>
+  </ul>
+
+  <h2>Experience</h2>
+
+  <div class="job">
+    <div class="job__head">
+      <span><span class="job__role">Systems Administrator, Team Lead</span> — <span class="job__org">Eightpoint</span></span>
+      <span class="job__meta">Cape Coral, FL · Jan 2020 – Present</span>
+    </div>
+    <ul>
+      <li>Lead a 3-person IT team supporting <strong>170 employees across 3 locations</strong>, <strong>400+ endpoints</strong>, 10+ on-prem servers, and a substantial AWS footprint.</li>
+      <li>Administer <strong>Microsoft 365 / Entra ID / Intune</strong>; consolidated multiple M365 tenants into one during a company merger.</li>
+      <li>Manage <strong>60+ SaaS applications</strong>, implementing <strong>SSO/SAML</strong> across the majority to centralize identity and access.</li>
+      <li>Cut new-hire provisioning from <strong>4–6 hours to under 1 hour</strong> with end-to-end onboarding/offboarding automation.</li>
+      <li>Built <strong>automated ticket triage</strong> and <strong>zero-touch access-request</strong> workflows, eliminating manual routing and saving significant team hours.</li>
+      <li>Designed and built a <strong>bare-metal Kubernetes cluster from scratch</strong> (Rancher-managed) running internal apps via CI/CD (GitHub Actions + ArgoCD); deployed <strong>on-prem AI</strong> on the cluster.</li>
+      <li>Developed internal tools in <strong>Node.js</strong> (SSO app portal, security dashboard, asset/domain trackers, employee directory); maintain high uptime with BetterStack monitoring.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job__head">
+      <span><span class="job__role">Systems Administrator / Network Technician</span> — <span class="job__org">Collier County Sheriff's Office</span></span>
+      <span class="job__meta">Naples, FL · 2018 – 2019</span>
+    </div>
+    <ul>
+      <li>Managed servers, workstations, routers, and switches; troubleshot diverse systems and monitored infrastructure health.</li>
+    </ul>
+  </div>
+
+  <div class="job">
+    <div class="job__head">
+      <span><span class="job__role">Network Engineer</span> — <span class="job__org">Softrim</span></span>
+      <span class="job__meta">Fort Myers, FL · 2017 – 2018</span>
+    </div>
+    <ul>
+      <li>Led a technician team on a client help desk; delivered network, server, and desktop support and built a patch-management system for a large client.</li>
+    </ul>
+  </div>
+
+  <p class="earlier">
+    Earlier: Systems Administrator roles at Florida Cancer Specialists (2017) and
+    Greenwire Technology (2016–2017), and Desktop Support at ATOS / Lee County (2014–2015).
+  </p>
+
+  <h2>Certifications</h2>
+  <p class="compact">CompTIA Server+ (active) · MCSA · CompTIA A+ · CompTIA Network+ · Certified ScrumMaster (CSM)</p>
+
+  <h2>Education</h2>
+  <p class="compact">Florida SouthWestern State College — Computer Science coursework (2015–2017)</p>
+  <p class="compact">Dunbar High School, Academy of Technology Excellence — 32+ industry IT certifications earned</p>
+</body>
+</html>

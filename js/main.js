@@ -54,8 +54,10 @@
   /* =========================== Window builders =========================== */
   function buildAbout() {
     var p = SITE.profile;
-    var wrap = el("div");
+    var wrap = el("div", "about-cols");
 
+    // left column: neofetch (ASCII art + specs)
+    var left = el("div", "about-left");
     var fetchBlock = el("div", "neofetch");
     fetchBlock.appendChild(el("pre", "neofetch__art", esc((p.asciiLogo || []).join("\n"))));
 
@@ -70,16 +72,21 @@
       specs.appendChild(el("div", "row", "<dt>" + esc(kv[0]) + "</dt>: " + esc(kv[1])));
     });
     fetchBlock.appendChild(specs);
-    wrap.appendChild(fetchBlock);
+    left.appendChild(fetchBlock);
 
-    var tags = el("div", "tags");
-    (p.stack || []).forEach(function (s) { tags.appendChild(el("span", "tag", esc(s))); });
-    wrap.appendChild(tags);
-
+    // right column: bio + stack tags
+    var right = el("div", "about-right");
     var bio = el("div", "bio");
     bio.appendChild(el("p", null, "<strong>" + esc(p.summary) + "</strong>"));
     (p.bio || []).forEach(function (para) { bio.appendChild(el("p", null, esc(para))); });
-    wrap.appendChild(bio);
+    right.appendChild(bio);
+
+    var tags = el("div", "tags");
+    (p.stack || []).forEach(function (s) { tags.appendChild(el("span", "tag", esc(s))); });
+    right.appendChild(tags);
+
+    wrap.appendChild(left);
+    wrap.appendChild(right);
     return wrap;
   }
 
@@ -120,6 +127,12 @@
     var dl = el("a", "btn", "↓ Download résumé (PDF)");
     dl.href = SITE.resumePdf; dl.setAttribute("download", "");
     wrap.appendChild(dl);
+
+    if (SITE.resumePdfFull) {
+      var full = el("a", "resume-full-link", "full version (2 pages) ↗");
+      full.href = SITE.resumePdfFull; full.target = "_blank"; full.rel = "noopener";
+      wrap.appendChild(full);
+    }
 
     if (SITE.certifications && SITE.certifications.length) {
       var c = SITE.certifications.map(function (x) {
@@ -260,15 +273,21 @@
 
   /* =========================== Registration ============================== */
   function registerWindows() {
-    WM.register("about",    { title: "about — collin",  build: buildAbout,    defaults: { x: 40,  y: 30,  w: 440 } });
-    WM.register("projects", { title: "projects",         build: buildProjects, defaults: { x: 500, y: 30,  w: 460, h: 360 } });
-    WM.register("resume",   { title: "resume",           build: buildResume,   defaults: { x: 90,  y: 110, w: 480, h: 380 } });
-    WM.register("blog",     { title: "blog",             build: buildBlog,     defaults: { x: 540, y: 130, w: 440 } });
-    WM.register("contact",  { title: "contact",          build: buildContact,  defaults: { x: 150, y: 180, w: 400 } });
+    // terminal opens anchored to the bottom-right of the desktop
+    var W = window.innerWidth, H = window.innerHeight;
+    var termW = 580, termH = 260;
+    var termX = Math.max(24, W - termW - 28);
+    var termY = Math.max(80, H - termH - 56 /* dock */ - 24);
+
+    WM.register("about",    { title: "about — collin",  build: buildAbout,    defaults: { x: 40,  y: 34,  w: 720 } });
+    WM.register("projects", { title: "projects",         build: buildProjects, defaults: { x: 60,  y: 120, w: 460, h: 360 } });
+    WM.register("resume",   { title: "resume",           build: buildResume,   defaults: { x: 90,  y: 150, w: 480, h: 380 } });
+    WM.register("blog",     { title: "blog",             build: buildBlog,     defaults: { x: 540, y: 170, w: 440 } });
+    WM.register("contact",  { title: "contact",          build: buildContact,  defaults: { x: 150, y: 200, w: 400 } });
     WM.register("terminal", {
       title: "terminal — zsh", className: "terminal",
       build: function () { return Terminal.build(); },
-      defaults: { x: 40, y: 360, w: 560, h: 280 },
+      defaults: { x: termX, y: termY, w: termW, h: termH },
     });
   }
 
@@ -307,9 +326,11 @@
       btn.addEventListener("click", function () { WM.toggle(btn.dataset.launch); });
     });
 
-    // default landing layout: about + projects + terminal (staggered by spawn)
+    // default landing layout: about + terminal visible; projects pre-opened
+    // but minimized to the dock to nudge visitors into clicking around.
+    var pj = WM.open("projects");
+    if (pj) pj.classList.add("is-minimized");
     WM.open("about");
-    WM.open("projects");
     WM.open("terminal");
   }
 

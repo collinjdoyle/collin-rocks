@@ -40,8 +40,25 @@ links, lists, blockquotes).
 ### Update bio / role / experience
 Edit `profile { }` and `experience: [ ]` in `js/data.js`.
 
-### Swap in your real résumé
-Replace `assets/resume.pdf` with your real file — **keep the same filename**.
+### Update the résumé
+The résumé PDFs are generated from HTML sources in [`resume/`](resume/):
+- `resume/resume-1page.html` → `assets/resume.pdf` (1-page, the site default)
+- `resume/resume-2page.html` → `assets/resume-full.pdf` (2-page, full history)
+
+Edit the HTML, then re-render with headless Chrome (uses an isolated profile so
+it doesn't attach to a running Chrome):
+
+```powershell
+$chrome = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+& $chrome --headless=new --disable-gpu --no-pdf-header-footer `
+  --user-data-dir="$env:TEMP\chrpdf" `
+  --print-to-pdf="assets\resume.pdf" `
+  ((Resolve-Path resume\resume-1page.html).Path -as [uri]).AbsoluteUri
+```
+
+(Both files are kept ATS-safe: single column, real selectable text, standard
+headings, no text inside tables.) Prefer to keep your own PDF? Just drop it in as
+`assets/resume.pdf` — keep the filename.
 
 ### Add or change a theme
 1. Add a `[data-theme="name"] { … }` block of CSS variables in `css/styles.css`.
