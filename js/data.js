@@ -10,25 +10,22 @@ const SITE = {
       "leading IT operations and building secure, scalable infrastructure. " +
       "I live in the space between enterprise ops and the homelab.",
     bio: [
-      "I run IT end to end: Microsoft 365, Entra ID and Intune administration, " +
-        "SSO/SAML integrations, network and VPN design, Exchange, and AWS — " +
-        "kept secure and reliable.",
-      "Beyond traditional IT I lean hard into automation, local AI, and custom " +
-        "development. I build tools and workflows in Node.js and write scripts " +
-        "that delete the boring parts of the job. The goal never changes: make " +
-        "systems faster, smarter, and easier for people to use.",
+      "I run and manage IT end to end: 365, Azure, Entra ID, Intune MDM," +
+        "SSO/SAML integrations, local networks, servers, VPNs, Exchange, and " +
+        "other cloud services like AWS and Google Cloud. All kept secure, up to date and reliable.",
+        "Beyond traditional IT I lean hard into automations and have made it my goal to automate" +
+        "anything I can using a combination of local AI, classic logic, and some close kept secrets!",
     ],
     stack: [
-      "Microsoft 365 / Entra ID / Intune",
-      "Kubernetes",
-      "Docker",
-      "Linux",
-      "PowerShell",
-      "Node.js",
-      "AWS",
-      "Networking / VPN",
+      "Microsoft 365 - Entra ID, Intune, Application Management, Security, full suite",
+      "Containers - Baremetal, Kubernetes, EKS, Docker",
+      "SaaS Management - Trelica, Auvik SaaS",
+      "Software Development - Node.ks, React, Postgres",
+      "Scripting - PowerShell, Bash, Terraform, others",
+      "Cloud Computing - AWS, Azure, Google Cloud",
+      "Networking - ZT-VPN, Wireguard, SMB Network Architecture and Deployment",
     ],
-    currentFocus: "Local AI on the homelab cluster + IT automation at scale",
+    currentFocus: "Classic and AI automations | Local AI Projects | Systems Administration",
     asciiLogo: [
       "   ____ ____   ",
       "  / ___|  _ \\  ",
@@ -48,15 +45,15 @@ const SITE = {
   // links: [] means private / no public link.
   projects: [
     {
-      title: "Unraid home server",
+      title: "Homelab - Unraid Server",
       summary:
         "Primary personal server: a stack of Dockerized apps, a Postgres " +
-        "database, and a full self-hosted media stack — all on Unraid.",
+        "database, and a full self-hosted media stack running on an Unraid Server.",
       tags: ["Unraid", "Docker", "PostgreSQL", "Self-hosted", "Media"],
       links: [],
     },
     {
-      title: "Local Kubernetes cluster",
+      title: "Homelab - Kubernetes cluster",
       summary:
         "A self-managed Kubernetes cluster in the homelab for running " +
         "containerized workloads and experimenting with cloud-native tooling.",
@@ -125,7 +122,7 @@ const SITE = {
       title: "Hello, world",
       date: "2026-05-30",
       file: "posts/hello-world.md",
-      summary: "Why this site exists and what to expect here.",
+      summary: "Hello.",
     },
   ],
 };

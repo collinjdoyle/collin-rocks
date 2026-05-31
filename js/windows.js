@@ -9,7 +9,7 @@
   var spawnOffset = 0;
 
   var isMobile = function () {
-    return window.matchMedia("(max-width: 720px)").matches;
+    return window.matchMedia("(max-width: 850px)").matches;
   };
 
   function setDockState(id, on) {

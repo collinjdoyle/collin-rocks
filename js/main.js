@@ -86,7 +86,7 @@
   function buildProjects() {
     var wrap = el("div");
     wrap.appendChild(el("h2", "win-h", "projects"));
-    wrap.appendChild(el("p", "win-sub", "Things I build and run. Most live in the homelab."));
+    wrap.appendChild(el("p", "win-sub", "Things I'm working on."));
     SITE.projects.forEach(function (proj) {
       var box = el("div", "project");
       box.appendChild(el("div", "project__title", esc(proj.title)));
@@ -272,7 +272,7 @@
     WM.register("blog",     { title: "blog",             build: buildBlog,     defaults: { x: 540, y: 170, w: 440 } });
     WM.register("contact",  { title: "contact",          build: buildContact,  defaults: { x: 150, y: 200, w: 400 } });
     WM.register("terminal", {
-      title: "terminal — zsh", className: "terminal",
+      title: "terminal@collin.rocks", className: "terminal",
       build: function () { return Terminal.build(); },
       defaults: { x: termX, y: termY, w: termW, h: termH },
     });

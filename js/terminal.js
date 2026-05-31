@@ -42,7 +42,7 @@
       line('<span class="term-accent">Available commands:</span>');
       var rows = [
         ["help", "this list"],
-        ["whoami / about", "who I am"],
+        ["whoami / about"],
         ["neofetch", "the specs panel"],
         ["projects", "list projects"],
         ["cat <project>", "project details (name or number)"],
@@ -53,7 +53,7 @@
         ["theme [name]", "tokyo-night · catppuccin · gruvbox · nord"],
         ["gui", "open the windowed desktop view"],
         ["clear", "clear the terminal"],
-        ["echo / pwd / history", "unix flavor"],
+        ["echo / pwd / history"],
       ];
       rows.forEach(function (r) {
         line('  <span class="term-green term-accent">' + r[0].padEnd(22) +
