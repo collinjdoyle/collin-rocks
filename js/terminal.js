@@ -1,9 +1,4 @@
-/* =============================================================================
-   terminal.js — interactive terminal widget, reads from window.SITE.
-   -----------------------------------------------------------------------------
-   Exposes window.Terminal.build() -> DOM node used as the terminal window body.
-   Commands are case-insensitive. Theme switching goes through window.Themes.
-   ========================================================================== */
+// Interactive terminal. Builds the terminal window body; reads from window.SITE.
 (function () {
   "use strict";
 
@@ -16,7 +11,6 @@
     return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   }
 
-  /* ---- output helpers ----------------------------------------------------- */
   function line(html, cls) {
     var p = document.createElement("div");
     p.className = "term-line" + (cls ? " " + cls : "");
@@ -37,7 +31,6 @@
       '<span class="term-cmd-echo">' + esc(cmd) + "</span>");
   }
 
-  /* ---- command table ------------------------------------------------------ */
   var COMMANDS = {
     help: function () {
       line('<span class="term-accent">Available commands:</span>');
@@ -116,7 +109,6 @@
       var key = (args[0] || "").toLowerCase();
       if (!key) { line('<span class="term-err">usage: cat &lt;project|post&gt;</span>'); return; }
 
-      // by index
       var proj = null;
       if (/^\d+$/.test(key)) proj = SITE.projects[parseInt(key, 10) - 1];
       if (!proj) {
@@ -126,7 +118,6 @@
       }
       if (proj) { printProject(proj); return; }
 
-      // try posts
       var post = SITE.posts.filter(function (p) {
         return slug(p.slug).indexOf(slug(key)) !== -1 || slug(p.title).indexOf(slug(key)) !== -1;
       })[0];
@@ -135,7 +126,6 @@
       line('<span class="term-err">cat: ' + esc(key) + ": no such project or post</span>");
     },
     open: function (args) {
-      // `open <project>` opens project's first link or the projects window
       var key = (args[0] || "").toLowerCase();
       var proj = SITE.projects.filter(function (p) { return slug(p.title).indexOf(slug(key)) !== -1; })[0];
       if (proj && proj.links && proj.links.length) {
@@ -230,7 +220,6 @@
     },
   };
 
-  // aliases
   COMMANDS.ll = COMMANDS.ls;
 
   function printProject(proj) {
@@ -249,7 +238,6 @@
     }
   }
 
-  /* ---- input handling ----------------------------------------------------- */
   var ALL_NAMES = null;
   function commandNames() {
     if (!ALL_NAMES) {
@@ -271,7 +259,6 @@
     var cmd = parts[0].toLowerCase();
     var args = parts.slice(1);
 
-    // "ls projects" / "ls posts" handled by ls; allow "projects"/"blog" direct
     if (COMMANDS[cmd]) {
       try { COMMANDS[cmd](args); }
       catch (err) { line('<span class="term-err">error: ' + esc(err.message) + "</span>"); }
@@ -285,7 +272,6 @@
   }
 
   function suggest(cmd) {
-    // cheap: first command that shares the most leading chars
     var best = null, bestScore = 0;
     commandNames().forEach(function (name) {
       var n = 0;
@@ -319,7 +305,6 @@
     }
   }
 
-  /* ---- build -------------------------------------------------------------- */
   function build() {
     var wrap = document.createElement("div");
     wrap.className = "term-wrap";
@@ -343,13 +328,11 @@
     wrap.appendChild(inputLine);
 
     inputEl.addEventListener("keydown", onKey);
-    // clicking anywhere in the terminal focuses the input
     wrap.addEventListener("click", function (e) {
-      if (window.getSelection().toString()) return; // allow text selection
+      if (window.getSelection().toString()) return;
       inputEl.focus();
     });
 
-    // remember scroll container after mount
     setTimeout(function () {
       scrollEl = wrap.closest(".window__body");
       banner();

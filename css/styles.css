@@ -1,13 +1,7 @@
-/* =============================================================================
-   styles.css — collin.rocks
-   "desktop rice" — a tiling-WM Linux desktop aesthetic over a normal site.
-   -----------------------------------------------------------------------------
-   THEMES: defined as CSS custom properties scoped by [data-theme] on <html>.
-   To add a theme: copy a block below, change the hex values, then register the
-   name in js/terminal.js (THEMES array) and js/main.js. Persisted via localStorage.
-   ========================================================================== */
+/* Themes: CSS custom properties scoped by [data-theme] on <html>.
+   Add one here, then add its name to THEME_LIST in js/main.js. */
 
-/* ---------- Tokyo Night (Storm) — DEFAULT ---------- */
+/* Tokyo Night (Storm) — default */
 :root,
 [data-theme="tokyo-night"] {
   --bg:        #1a1b26;
@@ -72,7 +66,7 @@
   --cyan:      #8fbcbb;
 }
 
-/* ---------- shared tokens ---------- */
+/* Shared tokens */
 :root {
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code",
     "Fira Code", Menlo, Consolas, monospace;
@@ -85,9 +79,7 @@
                   0 6px 16px -6px rgba(0, 0, 0, 0.6);
 }
 
-/* =============================================================================
-   Base
-   ========================================================================== */
+/* Base */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -101,17 +93,17 @@ body {
   line-height: 1.6;
   color: var(--text);
   background-color: var(--bg);
-  /* subtle dotted grid + faint vignette so the desktop is never dead-flat */
+  /* dotted grid + faint vignette */
   background-image:
     radial-gradient(rgba(122, 162, 247, 0.06) 1px, transparent 1px),
     radial-gradient(1200px 600px at 50% -10%, rgba(122, 162, 247, 0.08), transparent 60%);
   background-size: 22px 22px, 100% 100%;
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden; /* desktop owns scrolling; windows scroll internally */
+  overflow: hidden;
 }
 
-/* faint film grain overlay on top of everything but pointer-transparent */
+/* film grain overlay */
 body::after {
   content: "";
   position: fixed;
@@ -133,9 +125,7 @@ a:hover { text-decoration: underline; }
 
 ::selection { background: var(--accent); color: var(--bg); }
 
-/* =============================================================================
-   Status bar
-   ========================================================================== */
+/* Status bar */
 .statusbar {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -169,9 +159,7 @@ a:hover { text-decoration: underline; }
 .statusbar__clock { color: var(--muted); font-variant-numeric: tabular-nums; cursor: pointer; }
 .statusbar__clock:hover { color: var(--accent); }
 
-/* =============================================================================
-   Desktop
-   ========================================================================== */
+/* Desktop */
 .desktop {
   position: fixed;
   top: var(--statusbar-h);
@@ -190,9 +178,7 @@ a:hover { text-decoration: underline; }
 .noscript h1 { color: var(--accent); margin-bottom: 4px; }
 .noscript h2 { color: var(--magenta); margin-top: 28px; }
 
-/* =============================================================================
-   Window
-   ========================================================================== */
+/* Window */
 .window {
   position: absolute;
   display: flex;
@@ -278,9 +264,7 @@ a:hover { text-decoration: underline; }
   opacity: 0.5;
 }
 
-/* =============================================================================
-   Window content helpers
-   ========================================================================== */
+/* Window content */
 h1, h2, h3 { line-height: 1.25; }
 .win-h { color: var(--accent); margin: 0 0 6px; font-size: 1.05rem; }
 .win-sub { color: var(--muted); margin: 0 0 14px; font-size: 0.85rem; }
@@ -304,8 +288,6 @@ h1, h2, h3 { line-height: 1.25; }
 .about-right { flex: 1 1 auto; min-width: 0; }
 .about-right .bio p:first-child { margin-top: 0; }
 
-/* about / neofetch */
-.neofetch { display: flex; gap: 18px; flex-wrap: wrap; }
 .neofetch__art {
   color: var(--magenta);
   white-space: pre;
@@ -323,14 +305,6 @@ h1, h2, h3 { line-height: 1.25; }
 .project:last-child { border-bottom: none; }
 .project__title { color: var(--text); font-weight: 700; margin: 0 0 2px; }
 .project__links { display: flex; gap: 12px; margin-top: 6px; font-size: 13px; }
-.add-hint {
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--muted);
-  border-left: 2px solid var(--border);
-  padding-left: 10px;
-}
-.add-hint code { color: var(--yellow); }
 
 /* resume */
 .btn {
@@ -386,9 +360,7 @@ h1, h2, h3 { line-height: 1.25; }
   font-family: inherit; cursor: pointer; padding: 0; margin-bottom: 10px; font-size: 13px;
 }
 
-/* =============================================================================
-   Terminal
-   ========================================================================== */
+/* Terminal */
 .terminal { background: var(--bg); }
 .terminal .window__body { padding: 12px 14px; font-size: 13.5px; }
 .term-output { white-space: pre-wrap; word-break: break-word; }
@@ -423,9 +395,7 @@ h1, h2, h3 { line-height: 1.25; }
   animation: blink 1.05s steps(1) infinite;
 }
 
-/* =============================================================================
-   Dock
-   ========================================================================== */
+/* Dock */
 .dock {
   position: fixed;
   bottom: 0; left: 0; right: 0;
@@ -454,9 +424,7 @@ h1, h2, h3 { line-height: 1.25; }
 .dock__btn.is-open { border-color: var(--accent); }
 .dock__btn--accent { color: var(--green); font-weight: 700; }
 
-/* =============================================================================
-   Animations
-   ========================================================================== */
+/* Animations */
 @keyframes blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 @keyframes windowIn {
   from { opacity: 0; transform: translateY(10px) scale(0.985); }
@@ -464,9 +432,7 @@ h1, h2, h3 { line-height: 1.25; }
 }
 .window--animate { animation: windowIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-/* =============================================================================
-   Mobile (< 720px): no dragging, windows become stacked full-width cards.
-   ========================================================================== */
+/* Mobile: no dragging, windows stack as full-width cards */
 @media (max-width: 720px) {
   body { overflow: auto; }
   .desktop {
@@ -491,9 +457,7 @@ h1, h2, h3 { line-height: 1.25; }
   .dock { overflow-x: auto; justify-content: flex-start; }
 }
 
-/* =============================================================================
-   Reduced motion: disable all the orchestration.
-   ========================================================================== */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

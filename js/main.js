@@ -1,15 +1,7 @@
-/* =============================================================================
-   main.js — orchestration.
-   - theme engine (window.Themes) + status-bar toggle, persisted to localStorage
-   - live clock
-   - builds each window's content from window.SITE
-   - tiny zero-dependency Markdown renderer for the blog
-   - dock wiring + default landing layout
-   ========================================================================== */
+// Themes, clock, window content, blog markdown, and boot.
 (function () {
   "use strict";
 
-  /* =========================== Themes ==================================== */
   var THEME_LIST = ["tokyo-night", "catppuccin", "gruvbox", "nord"];
   var THEME_KEY = "collin-rocks-theme";
 
@@ -29,8 +21,7 @@
     current: currentTheme,
   };
 
-  /* =========================== Clock ===================================== */
-  var CLOCK_KEY = "collin-rocks-clock24";   // "1" = 24-hour, else 12-hour (default)
+  var CLOCK_KEY = "collin-rocks-clock24";   // "1" = 24-hour, else 12-hour
   function is24h() {
     try { return localStorage.getItem(CLOCK_KEY) === "1"; } catch (_) { return false; }
   }
@@ -47,7 +38,6 @@
     }
   }
 
-  /* =========================== el() helper =============================== */
   function el(tag, cls, html) {
     var n = document.createElement(tag);
     if (cls) n.className = cls;
@@ -59,12 +49,10 @@
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
-  /* =========================== Window builders =========================== */
   function buildAbout() {
     var p = SITE.profile;
     var wrap = el("div", "about-cols");
 
-    // left column: ASCII art stacked above the specs
     var left = el("div", "about-left");
     left.appendChild(el("pre", "neofetch__art", esc((p.asciiLogo || []).join("\n"))));
 
@@ -80,7 +68,6 @@
     });
     left.appendChild(specs);
 
-    // right column: bio + stack tags
     var right = el("div", "about-right");
     var bio = el("div", "bio");
     bio.appendChild(el("p", null, "<strong>" + esc(p.summary) + "</strong>"));
@@ -121,8 +108,6 @@
       }
       wrap.appendChild(box);
     });
-    wrap.appendChild(el("p", "add-hint",
-      "More coming. Add projects by editing <code>js/data.js</code> → <code>projects[]</code>."));
     return wrap;
   }
 
@@ -144,7 +129,7 @@
       var c = SITE.certifications.map(function (x) {
         return esc(x.name) + " · " + esc(x.issuer) + (x.year ? " (" + esc(x.year) + ")" : "");
       }).join(" · ");
-      wrap.appendChild(el("p", "cert", "🎓 " + c));
+      wrap.appendChild(el("p", "cert", c));
     }
 
     SITE.experience.forEach(function (job) {
@@ -169,7 +154,7 @@
   function buildContact() {
     var wrap = el("div");
     wrap.appendChild(el("h2", "win-h", "contact"));
-    wrap.appendChild(el("p", "win-sub", "No form (no backend) — just reach out directly."));
+    wrap.appendChild(el("p", "win-sub", "Reach out directly."));
     var ul = el("ul", "links-list");
     SITE.links.forEach(function (l) {
       var li = el("li");
@@ -184,7 +169,6 @@
     return wrap;
   }
 
-  /* ---- blog (list + reader) with tiny markdown renderer ----------------- */
   function buildBlog() {
     var wrap = el("div");
     wrap.dataset.view = "list";
@@ -220,16 +204,12 @@
       .catch(function () {
         body.innerHTML =
           '<p class="term-err">Couldn\'t load this post.</p>' +
-          '<p class="muted">If you\'re viewing the site from a <code>file://</code> path, ' +
-          'browsers block <code>fetch</code>. Serve it over http (e.g. ' +
-          '<code>python -m http.server</code>) or view it live. ' +
-          'Raw file: <a href="' + esc(post.file) + '">' + esc(post.file) + "</a></p>";
+          '<p class="muted">Try again in a moment, or ' +
+          '<a href="' + esc(post.file) + '">open it directly</a>.</p>';
       });
   }
 
-  /* Minimal Markdown -> HTML. Handles headings, bold/italic/inline-code,
-     fenced code blocks, links, unordered lists, blockquotes, paragraphs.
-     Deliberately small; good enough for short posts, zero dependencies. */
+  // Small Markdown -> HTML: headings, bold/italic/code, fences, links, lists, quotes.
   function miniMarkdown(md) {
     var lines = md.replace(/\r\n/g, "\n").split("\n");
     var out = [], i = 0;
@@ -277,18 +257,14 @@
     return out.join("\n");
   }
 
-  /* =========================== Registration ============================== */
   function registerWindows() {
-    // terminal opens anchored to the bottom-right of the desktop, with a
-    // comfortable buffer. Positions are relative to the #desktop element
-    // (which sits between the status bar and dock), so measure it directly.
+    // terminal sits center-left of the desktop
     var desk = document.getElementById("desktop");
     var dw = desk ? desk.clientWidth : window.innerWidth;
     var dh = desk ? desk.clientHeight : window.innerHeight - 90;
     var termW = 640, termH = 300;
-    var EDGE = 40;           // buffer from the desktop edges
-    var termX = Math.max(16, dw - termW - EDGE);
-    var termY = Math.max(16, dh - termH - EDGE);
+    var termX = 40;
+    var termY = Math.max(16, Math.round((dh - termH) / 2));
 
     WM.register("about",    { title: "about — collin",  build: buildAbout,    defaults: { x: 40,  y: 34,  w: 720 } });
     WM.register("projects", { title: "projects",         build: buildProjects, defaults: { x: 60,  y: 120, w: 460, h: 360 } });
@@ -302,24 +278,20 @@
     });
   }
 
-  // let the terminal's `cat <post>` jump straight to a post
   document.addEventListener("blog:open", function (e) {
     var wrap = document.querySelector('[data-win="blog"] .window__body > div');
     var post = SITE.posts.filter(function (p) { return p.slug === e.detail.slug; })[0];
     if (wrap && post) openPost(wrap, post);
   });
 
-  /* =========================== Boot ====================================== */
   function boot() {
     WM._init();
     registerWindows();
 
-    // theme: restore saved or default
     var saved;
     try { saved = localStorage.getItem(THEME_KEY); } catch (_) {}
     applyTheme(saved || "tokyo-night");
 
-    // clock — 12-hour by default; click to toggle 12/24-hour (persisted)
     tickClock();
     setInterval(tickClock, 15000);
     var clock = document.getElementById("clock");
@@ -331,7 +303,6 @@
       });
     }
 
-    // theme toggle cycles through the list
     var toggle = document.getElementById("theme-toggle");
     if (toggle) {
       toggle.addEventListener("click", function () {
@@ -340,17 +311,12 @@
       });
     }
 
-    // dock launchers
     document.querySelectorAll(".dock__btn[data-launch]").forEach(function (btn) {
       btn.addEventListener("click", function () { WM.toggle(btn.dataset.launch); });
     });
 
-    // default landing layout: about + terminal visible; projects pre-opened
-    // but minimized to the dock to nudge visitors into clicking around.
-    var pj = WM.open("projects");
-    if (pj) pj.classList.add("is-minimized");
+    // only about opens on load; everything else is reachable from the dock.
     WM.open("about");
-    WM.open("terminal");
   }
 
   if (document.readyState === "loading") {

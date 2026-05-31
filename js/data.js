@@ -1,30 +1,14 @@
-/* =============================================================================
-   data.js — SINGLE SOURCE OF TRUTH for all site content.
-   -----------------------------------------------------------------------------
-   Editing the site = editing this file. The windowed view AND the terminal
-   both render from this one object. You should rarely need to touch the HTML.
-
-   HOW TO EDIT (quick reference — see README.md for more):
-     • Update your bio/role/stack ........ profile { }
-     • Add a project ..................... add an object to projects [ ]
-     • Add a job ......................... add an object to experience [ ]
-     • Add a blog post ................... add an object to posts [ ] + a file
-                                           in /posts (see posts/hello-world.md)
-     • Add/change links .................. links [ ]
-   ========================================================================== */
-
+// Site content. The windowed view and the terminal both render from this.
 const SITE = {
   profile: {
     name: "Collin Doyle",
-    handle: "collin",                 // shown as collin@rocks in the prompt
+    handle: "collin",
     role: "Systems Administrator & Team Lead",
     location: "Fort Myers, Florida",
-    // 1–2 sentence summary shown in the about window + `whoami`.
     summary:
       "Systems & network administrator with over a decade of experience " +
       "leading IT operations and building secure, scalable infrastructure. " +
       "I live in the space between enterprise ops and the homelab.",
-    // Longer "about" prose (rendered in the about window under the summary).
     bio: [
       "I run IT end to end: Microsoft 365, Entra ID and Intune administration, " +
         "SSO/SAML integrations, network and VPN design, Exchange, and AWS — " +
@@ -45,7 +29,6 @@ const SITE = {
       "Networking / VPN",
     ],
     currentFocus: "Local AI on the homelab cluster + IT automation at scale",
-    // neofetch-style ASCII art. Keep lines the same length-ish for clean output.
     asciiLogo: [
       "   ____ ____   ",
       "  / ___|  _ \\  ",
@@ -57,23 +40,12 @@ const SITE = {
   },
 
   links: [
-    { label: "GitHub",   href: "https://github.com/CollinJDoyle",            icon: "" },
-    { label: "Email",    href: "mailto:cj.doyle@outlook.com",                icon: "" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/collinjdoyle/",  icon: "" },
+    { label: "GitHub",   href: "https://github.com/CollinJDoyle" },
+    { label: "Email",    href: "mailto:cj.doyle@outlook.com" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/collinjdoyle/" },
   ],
 
-  /* ---------------------------------------------------------------------------
-     PROJECTS — add as many as you like. Only `title` and `summary` are required.
-     `tags` shows as little chips. `links` is a list of { label, href }.
-     Leave `links: []` for private/internal projects.
-
-         {
-           title:   "My new project",
-           summary: "One line about what it is / does.",
-           tags:    ["Tag1", "Tag2"],
-           links:   [{ label: "Repo", href: "https://github.com/..." }],
-         },
-  --------------------------------------------------------------------------- */
+  // links: [] means private / no public link.
   projects: [
     {
       title: "Unraid home server",
@@ -81,7 +53,7 @@ const SITE = {
         "Primary personal server: a stack of Dockerized apps, a Postgres " +
         "database, and a full self-hosted media stack — all on Unraid.",
       tags: ["Unraid", "Docker", "PostgreSQL", "Self-hosted", "Media"],
-      links: [], // private homelab — add a writeup link here anytime
+      links: [],
     },
     {
       title: "Local Kubernetes cluster",
@@ -91,15 +63,8 @@ const SITE = {
       tags: ["Kubernetes", "Linux", "Containers", "Homelab"],
       links: [],
     },
-
-    // ▼▼▼ ADD MORE PROJECTS HERE ▼▼▼
-    // Copy the block above, fill it in. That's it — the window and the
-    // `projects` terminal command pick it up automatically.
   ],
 
-  /* ---------------------------------------------------------------------------
-     EXPERIENCE — most recent first. `end: "Present"` for the current role.
-  --------------------------------------------------------------------------- */
   experience: [
     {
       org: "Eightpoint",
@@ -147,20 +112,13 @@ const SITE = {
     },
   ],
 
-  // Optional: shown in the resume window above experience.
   certifications: [
     { name: "Certified ScrumMaster (CSM)", issuer: "Scrum Alliance", year: "2025" },
   ],
 
-  // Résumé PDFs. resumePdf is the 1-page default; resumePdfFull is the 2-page
-  // full-history version. Regenerate from resume/*.html (see README).
   resumePdf: "assets/resume.pdf",
   resumePdfFull: "assets/resume-full.pdf",
 
-  /* ---------------------------------------------------------------------------
-     BLOG POSTS — newest first. `file` is a Markdown file in /posts.
-     To add a post: create posts/my-slug.md, then add an entry here.
-  --------------------------------------------------------------------------- */
   posts: [
     {
       slug: "hello-world",
@@ -172,5 +130,4 @@ const SITE = {
   ],
 };
 
-// Expose globally so the (non-module) scripts can read it. No build step needed.
 window.SITE = SITE;

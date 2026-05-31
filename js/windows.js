@@ -1,23 +1,10 @@
-/* =============================================================================
-   windows.js — minimal window manager. No dependencies.
-   -----------------------------------------------------------------------------
-   Windows are *registered* with a builder (title + a function that returns the
-   body node + default geometry), then opened on demand. main.js does the
-   registering; the dock and terminal call open()/toggle().
-
-   Public API (window.WM):
-     WM.register(id, { title, build, defaults, className })
-     WM.open(id)      -> create if needed, un-minimize, focus
-     WM.close(id)
-     WM.toggle(id)
-     WM.isOpen(id)
-   ========================================================================== */
+// Window manager: register a builder per window, open/close/focus on demand.
 (function () {
   "use strict";
 
   var desktop = null;
-  var registry = {};          // id -> { title, build, defaults, className }
-  var open = {};              // id -> window element (only while open/minimized)
+  var registry = {};
+  var open = {};
   var zCounter = 10;
   var spawnOffset = 0;
 
@@ -25,13 +12,11 @@
     return window.matchMedia("(max-width: 720px)").matches;
   };
 
-  /* ---- dock sync ---------------------------------------------------------- */
   function setDockState(id, on) {
     var btn = document.querySelector('.dock__btn[data-launch="' + id + '"]');
     if (btn) btn.classList.toggle("is-open", !!on);
   }
 
-  /* ---- focus -------------------------------------------------------------- */
   function focus(el) {
     Object.keys(open).forEach(function (k) {
       open[k].classList.remove("is-focused");
@@ -40,7 +25,6 @@
     el.style.zIndex = String(++zCounter);
   }
 
-  /* ---- dragging (pointer based, titlebar handle) -------------------------- */
   function makeDraggable(el, handle) {
     var startX, startY, originX, originY, dragging = false;
 
@@ -60,11 +44,10 @@
       if (!dragging) return;
       var nx = originX + (e.clientX - startX);
       var ny = originY + (e.clientY - startY);
-      // keep titlebar reachable: clamp within viewport-ish bounds
       var maxX = window.innerWidth - 80;
       var maxY = window.innerHeight - 60;
       nx = Math.min(Math.max(nx, -el.offsetWidth + 120), maxX);
-      ny = Math.min(Math.max(ny, 34), maxY); // 34 = status bar height
+      ny = Math.min(Math.max(ny, 34), maxY);
       el.style.left = nx + "px";
       el.style.top = ny + "px";
     });
@@ -78,7 +61,6 @@
     handle.addEventListener("pointercancel", endDrag);
   }
 
-  /* ---- resize handle ------------------------------------------------------ */
   function makeResizable(el, handle) {
     var startX, startY, startW, startH, resizing = false;
     handle.addEventListener("pointerdown", function (e) {
@@ -105,7 +87,6 @@
     handle.addEventListener("pointercancel", end);
   }
 
-  /* ---- build a window element -------------------------------------------- */
   function build(id) {
     var def = registry[id];
     var d = def.defaults || {};
@@ -116,7 +97,7 @@
     el.setAttribute("aria-label", def.title);
     el.dataset.win = id;
 
-    // geometry (ignored on mobile via CSS)
+    // geometry is ignored on mobile (CSS stacks windows)
     if (!isMobile()) {
       el.style.width = (d.w || 420) + "px";
       if (d.h) el.style.height = d.h + "px";
@@ -127,7 +108,6 @@
       spawnOffset = (spawnOffset + 26) % 120;
     }
 
-    // titlebar
     var bar = document.createElement("div");
     bar.className = "window__titlebar";
     bar.innerHTML =
@@ -138,14 +118,12 @@
         '<button class="win-ctrl win-ctrl--close" title="Close" aria-label="Close">✕</button>' +
       "</span>";
 
-    // body
     var body = document.createElement("div");
     body.className = "window__body";
     var content = def.build();
     if (typeof content === "string") body.innerHTML = content;
     else if (content) body.appendChild(content);
 
-    // resize handle
     var resize = document.createElement("div");
     resize.className = "window__resize";
     resize.setAttribute("aria-hidden", "true");
@@ -154,7 +132,6 @@
     el.appendChild(body);
     el.appendChild(resize);
 
-    // controls
     bar.querySelector(".win-ctrl--close").addEventListener("click", function () { close(id); });
     bar.querySelector(".win-ctrl--min").addEventListener("click", function () {
       el.classList.add("is-minimized");
@@ -171,7 +148,6 @@
     return el;
   }
 
-  /* ---- public ------------------------------------------------------------- */
   function open_(id) {
     if (!registry[id]) { console.warn("[WM] no window registered:", id); return; }
     var el = open[id];
@@ -186,7 +162,6 @@
     desktop.appendChild(el);
     focus(el);
     setDockState(id, true);
-    // notify (e.g. terminal/gui mode)
     document.dispatchEvent(new CustomEvent("wm:open", { detail: { id: id, el: el } }));
     return el;
   }

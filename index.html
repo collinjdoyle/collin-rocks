@@ -15,7 +15,6 @@
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <!-- Fonts: JetBrains Mono, preconnected + display=swap, subset to latin -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -31,16 +30,9 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <!-- ===================== STATUS BAR (top) ===================== -->
   <header class="statusbar" role="banner">
     <div class="statusbar__left">
       <span class="statusbar__handle">collin@rocks</span>
-    </div>
-
-    <div class="statusbar__center">
-      <!-- Reserved slot for a future homelab status widget. Intentionally a
-           clean, labeled placeholder — DO NOT build the widget yet. -->
-      <span class="homelab-slot" data-placeholder="homelab-status" hidden></span>
     </div>
 
     <div class="statusbar__right">
@@ -57,13 +49,8 @@
     </div>
   </header>
 
-  <!-- ===================== DESKTOP ===================== -->
-  <!-- Windows are mounted here by main.js. The grain/grid overlay is CSS. -->
   <main id="desktop" class="desktop" aria-label="Desktop">
 
-    <!-- =============== NO-JS FALLBACK ===============
-         Core content, readable without JavaScript. The interactive windowed
-         desktop above replaces this when JS is available. -->
     <noscript>
       <div class="noscript">
         <h1>Collin Doyle</h1>
@@ -91,7 +78,6 @@
     </noscript>
   </main>
 
-  <!-- ===================== DOCK (bottom launcher) ===================== -->
   <nav class="dock" aria-label="Open windows">
     <button class="dock__btn" type="button" data-launch="about"    title="about">about</button>
     <button class="dock__btn" type="button" data-launch="projects" title="projects">projects</button>
@@ -101,7 +87,6 @@
     <button class="dock__btn dock__btn--accent" type="button" data-launch="terminal" title="terminal">&gt;_</button>
   </nav>
 
-  <!-- Scripts: plain (no modules / no build). Order matters; defer keeps order. -->
   <script src="js/data.js" defer></script>
   <script src="js/windows.js" defer></script>
   <script src="js/terminal.js" defer></script>
