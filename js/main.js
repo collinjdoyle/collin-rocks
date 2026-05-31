@@ -30,13 +30,21 @@
   };
 
   /* =========================== Clock ===================================== */
+  var CLOCK_KEY = "collin-rocks-clock24";   // "1" = 24-hour, else 12-hour (default)
+  function is24h() {
+    try { return localStorage.getItem(CLOCK_KEY) === "1"; } catch (_) { return false; }
+  }
   function tickClock() {
     var el = document.getElementById("clock");
     if (!el) return;
     var d = new Date();
-    var hh = String(d.getHours()).padStart(2, "0");
-    var mm = String(d.getMinutes()).padStart(2, "0");
-    el.textContent = hh + ":" + mm;
+    var h = d.getHours(), mm = String(d.getMinutes()).padStart(2, "0");
+    if (is24h()) {
+      el.textContent = String(h).padStart(2, "0") + ":" + mm;
+    } else {
+      var h12 = h % 12 || 12;
+      el.textContent = h12 + ":" + mm + " " + (h < 12 ? "AM" : "PM");
+    }
   }
 
   /* =========================== el() helper =============================== */
@@ -272,12 +280,15 @@
   /* =========================== Registration ============================== */
   function registerWindows() {
     // terminal opens anchored to the bottom-right of the desktop, with a
-    // comfortable buffer from the right edge and the dock
-    var W = window.innerWidth, H = window.innerHeight;
+    // comfortable buffer. Positions are relative to the #desktop element
+    // (which sits between the status bar and dock), so measure it directly.
+    var desk = document.getElementById("desktop");
+    var dw = desk ? desk.clientWidth : window.innerWidth;
+    var dh = desk ? desk.clientHeight : window.innerHeight - 90;
     var termW = 640, termH = 300;
-    var EDGE = 44;            // gap from the right edge
-    var termX = Math.max(24, W - termW - EDGE);
-    var termY = Math.max(80, H - termH - 56 /* dock */ - 36);
+    var EDGE = 40;           // buffer from the desktop edges
+    var termX = Math.max(16, dw - termW - EDGE);
+    var termY = Math.max(16, dh - termH - EDGE);
 
     WM.register("about",    { title: "about — collin",  build: buildAbout,    defaults: { x: 40,  y: 34,  w: 720 } });
     WM.register("projects", { title: "projects",         build: buildProjects, defaults: { x: 60,  y: 120, w: 460, h: 360 } });
@@ -308,9 +319,17 @@
     try { saved = localStorage.getItem(THEME_KEY); } catch (_) {}
     applyTheme(saved || "tokyo-night");
 
-    // clock
+    // clock — 12-hour by default; click to toggle 12/24-hour (persisted)
     tickClock();
     setInterval(tickClock, 15000);
+    var clock = document.getElementById("clock");
+    if (clock) {
+      clock.title = "Click to switch 12 / 24-hour";
+      clock.addEventListener("click", function () {
+        try { localStorage.setItem(CLOCK_KEY, is24h() ? "0" : "1"); } catch (_) {}
+        tickClock();
+      });
+    }
 
     // theme toggle cycles through the list
     var toggle = document.getElementById("theme-toggle");

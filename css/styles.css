@@ -155,17 +155,6 @@ a:hover { text-decoration: underline; }
 .statusbar__right { display: flex; align-items: center; gap: 12px; }
 .statusbar__handle { color: var(--green); font-weight: 700; }
 
-.workspaces { display: flex; gap: 4px; }
-.ws {
-  display: inline-flex;
-  align-items: center; justify-content: center;
-  width: 18px; height: 18px;
-  border-radius: 4px;
-  color: var(--muted);
-  font-size: 11px;
-}
-.ws--active { background: var(--accent); color: var(--bg); font-weight: 700; }
-
 .statusbar__btn {
   font-family: inherit;
   font-size: 12px;
@@ -177,7 +166,8 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
 }
 .statusbar__btn:hover { border-color: var(--accent); color: var(--accent); }
-.statusbar__clock { color: var(--muted); font-variant-numeric: tabular-nums; }
+.statusbar__clock { color: var(--muted); font-variant-numeric: tabular-nums; cursor: pointer; }
+.statusbar__clock:hover { color: var(--accent); }
 
 /* =============================================================================
    Desktop
@@ -498,7 +488,6 @@ h1, h2, h3 { line-height: 1.25; }
   .about-cols { flex-direction: column; gap: 14px; }
   .terminal { min-height: 320px; }
   .terminal .window__body { min-height: 260px; }
-  .workspaces { display: none; }
   .dock { overflow-x: auto; justify-content: flex-start; }
 }
 
