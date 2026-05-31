@@ -311,8 +311,21 @@
       });
     }
 
+    // On mobile, show one section at a time (tap-to-open). On desktop, toggle.
+    var mqMobile = window.matchMedia("(max-width: 720px)");
+    var SECTIONS = ["about", "projects", "resume", "blog", "contact", "terminal"];
+    function openSolo(id) {
+      SECTIONS.forEach(function (other) {
+        if (other !== id && WM.isOpen(other)) WM.close(other);
+      });
+      WM.open(id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
     document.querySelectorAll(".dock__btn[data-launch]").forEach(function (btn) {
-      btn.addEventListener("click", function () { WM.toggle(btn.dataset.launch); });
+      btn.addEventListener("click", function () {
+        if (mqMobile.matches) openSolo(btn.dataset.launch);
+        else WM.toggle(btn.dataset.launch);
+      });
     });
 
     // only about opens on load; everything else is reachable from the dock.

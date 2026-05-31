@@ -432,29 +432,54 @@ h1, h2, h3 { line-height: 1.25; }
 }
 .window--animate { animation: windowIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-/* Mobile: no dragging, windows stack as full-width cards */
+/* Mobile: single-column tap-to-open cards, no dragging */
 @media (max-width: 720px) {
-  body { overflow: auto; }
+  body { overflow: auto; font-size: 13.5px; }
+
   .desktop {
     position: static;
     overflow: visible;
-    padding: 12px;
-    padding-bottom: calc(var(--dock-h) + 16px);
+    /* clear the fixed status bar (top) and dock (bottom) */
+    padding: calc(var(--statusbar-h) + 12px) 12px calc(var(--dock-h) + 16px);
   }
+
+  /* static full-width cards; neutralize any inline floating geometry */
   .window {
     position: static !important;
+    left: auto !important;
+    top: auto !important;
     width: 100% !important;
     height: auto !important;
     max-width: 100%;
-    margin: 0 0 14px;
+    margin: 0;
     transform: none !important;
   }
   .window__titlebar { cursor: default; }
+  .window__controls { display: none; }   /* min/max/close are meaningless stacked */
   .window__resize { display: none; }
+  .window__body { padding: 16px; }
+
+  /* about: stack the two columns full width */
   .about-cols { flex-direction: column; gap: 14px; }
-  .terminal { min-height: 320px; }
-  .terminal .window__body { min-height: 260px; }
-  .dock { overflow-x: auto; justify-content: flex-start; }
+  .about-left { flex: none; max-width: none; }
+  .neofetch__art { font-size: 11px; }
+
+  .terminal { min-height: 300px; }
+  .terminal .window__body { min-height: 240px; }
+
+  /* dock becomes a horizontally scrollable nav with bigger tap targets */
+  .dock {
+    gap: 6px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .dock__btn {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 9px 15px;
+    transform: none !important;   /* no hover-lift on touch */
+  }
 }
 
 /* Reduced motion */
