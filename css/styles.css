@@ -308,7 +308,9 @@ h1, h2, h3 { line-height: 1.25; }
 
 /* about — two-column horizontal layout */
 .about-cols { display: flex; gap: 24px; align-items: flex-start; }
-.about-left { flex: 0 0 auto; }
+.about-left { flex: 0 0 230px; max-width: 230px; }
+.about-left .neofetch__art { margin-bottom: 10px; }
+.about-left .neofetch__specs .row { margin-bottom: 4px; }
 .about-right { flex: 1 1 auto; min-width: 0; }
 .about-right .bio p:first-child { margin-top: 0; }
 

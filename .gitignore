@@ -9,3 +9,6 @@ ONBOARDING.md
 .DS_Store
 Thumbs.db
 *.swp
+
+# Local headless-screenshot preview
+.preview.png

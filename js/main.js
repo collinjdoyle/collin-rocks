@@ -56,10 +56,9 @@
     var p = SITE.profile;
     var wrap = el("div", "about-cols");
 
-    // left column: neofetch (ASCII art + specs)
+    // left column: ASCII art stacked above the specs
     var left = el("div", "about-left");
-    var fetchBlock = el("div", "neofetch");
-    fetchBlock.appendChild(el("pre", "neofetch__art", esc((p.asciiLogo || []).join("\n"))));
+    left.appendChild(el("pre", "neofetch__art", esc((p.asciiLogo || []).join("\n"))));
 
     var specs = el("div", "neofetch__specs");
     specs.appendChild(el("div", "row", '<span class="term-accent">' + esc(p.name) + "</span>"));
@@ -71,8 +70,7 @@
     pairs.forEach(function (kv) {
       specs.appendChild(el("div", "row", "<dt>" + esc(kv[0]) + "</dt>: " + esc(kv[1])));
     });
-    fetchBlock.appendChild(specs);
-    left.appendChild(fetchBlock);
+    left.appendChild(specs);
 
     // right column: bio + stack tags
     var right = el("div", "about-right");
@@ -273,11 +271,13 @@
 
   /* =========================== Registration ============================== */
   function registerWindows() {
-    // terminal opens anchored to the bottom-right of the desktop
+    // terminal opens anchored to the bottom-right of the desktop, with a
+    // comfortable buffer from the right edge and the dock
     var W = window.innerWidth, H = window.innerHeight;
-    var termW = 580, termH = 260;
-    var termX = Math.max(24, W - termW - 28);
-    var termY = Math.max(80, H - termH - 56 /* dock */ - 24);
+    var termW = 640, termH = 300;
+    var EDGE = 44;            // gap from the right edge
+    var termX = Math.max(24, W - termW - EDGE);
+    var termY = Math.max(80, H - termH - 56 /* dock */ - 36);
 
     WM.register("about",    { title: "about — collin",  build: buildAbout,    defaults: { x: 40,  y: 34,  w: 720 } });
     WM.register("projects", { title: "projects",         build: buildProjects, defaults: { x: 60,  y: 120, w: 460, h: 360 } });
