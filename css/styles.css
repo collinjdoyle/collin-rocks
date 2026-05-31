@@ -376,6 +376,26 @@ h1, h2, h3 { line-height: 1.25; }
 .term-green { color: var(--green); }
 .term-cyan { color: var(--cyan); }
 
+/* Terminal games */
+.wordle-row { letter-spacing: 2px; }
+.wd-g, .wd-y, .wd-b {
+  display: inline-block;
+  width: 1.5em;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 3px;
+  margin: 1px 0;
+}
+.wd-g { background: var(--green); color: var(--bg); }
+.wd-y { background: var(--yellow); color: var(--bg); }
+.wd-b { background: var(--surface-2); color: var(--muted); }
+.snk-head { color: var(--accent); }
+.snk-body { color: var(--green); }
+.snk-food { color: var(--yellow); }
+.mtx-head { color: var(--text); }
+.mtx { color: var(--green); }
+.mtx-dim { color: var(--muted); }
+
 .term-inputline { display: flex; align-items: baseline; gap: 6px; }
 .term-input {
   flex: 1;

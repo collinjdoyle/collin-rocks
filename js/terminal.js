@@ -4,8 +4,14 @@
 
   var PROMPT_USER = "collin@rocks";
   var outputEl, inputEl, scrollEl;
+  var inputLineEl, promptEl, promptHTML;
   var history = [];
   var histIdx = -1;
+
+  // Game input modes (see js/games.js). One of these is active while a game runs.
+  var lineInputHandler = null;  // turn-based: each Enter calls this with the typed text
+  var rawKeyHandler = null;     // real-time: keydown events route straight here
+  var gamePromptText = "game>";
 
   function slug(s) {
     return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -43,6 +49,7 @@
         ["resume", "experience + résumé download"],
         ["blog", "list posts  ·  cat <post> to read"],
         ["contact", "how to reach me"],
+        ["games", "play games & toys in the terminal"],
         ["theme [name]", "tokyo-night · catppuccin · gruvbox · nord"],
         ["gui", "open the windowed desktop view"],
         ["clear", "clear the terminal"],
@@ -222,6 +229,65 @@
 
   COMMANDS.ll = COMMANDS.ls;
 
+  // ---- game mode plumbing ----------------------------------------------
+  function setPrompt(text) { if (promptEl) promptEl.textContent = text; }
+  function restorePrompt() { if (promptEl) promptEl.innerHTML = promptHTML; }
+
+  function docKey(e) { if (rawKeyHandler) rawKeyHandler(e); }
+
+  function startLineGame(opts) {
+    lineInputHandler = opts.onLine;
+    gamePromptText = opts.prompt || "game>";
+    setPrompt(gamePromptText);
+  }
+  function startKeyGame(handler) {
+    rawKeyHandler = handler;
+    if (inputLineEl) inputLineEl.style.display = "none";
+    document.addEventListener("keydown", docKey, true);
+  }
+  function endGame() {
+    lineInputHandler = null;
+    rawKeyHandler = null;
+    document.removeEventListener("keydown", docKey, true);
+    if (inputLineEl) inputLineEl.style.display = "";
+    restorePrompt();
+    histIdx = history.length;
+    if (inputEl) inputEl.focus();
+    scrollToEnd();
+  }
+
+  // Minimal surface handed to games (see js/games.js).
+  var TermAPI = {
+    print: function (html, cls) { return line(html, cls); },
+    text: function (str, cls) { var p = line("", cls); p.textContent = str; return p; },
+    blank: blank,
+    clear: function () { outputEl.innerHTML = ""; },
+    esc: esc,
+    frame: function (cls) { return line("", cls); },
+    setHTML: function (el, html) { el.innerHTML = html; },
+    scrollToEnd: scrollToEnd,
+    readLine: startLineGame,
+    captureKeys: startKeyGame,
+    endGame: endGame,
+  };
+
+  if (window.Games) {
+    var GAME_REG = window.Games.init(TermAPI);
+    GAME_REG.forEach(function (g) {
+      COMMANDS[g.name] = function (args) { g.fn(args || []); };
+    });
+    COMMANDS.games = function () {
+      line('<span class="term-accent">games & toys</span> <span class="term-muted">— type a name to play</span>');
+      GAME_REG.forEach(function (g) {
+        line('  <span class="term-green term-accent">' + g.name.padEnd(12) +
+          '</span><span class="term-muted">' + g.desc + "</span>");
+      });
+      blank();
+      line('<span class="term-muted">real-time games use arrows/WASD; press </span>' +
+        '<span class="term-yellow">q</span><span class="term-muted"> to quit any of them.</span>');
+    };
+  }
+
   function printProject(proj) {
     line('<span class="term-accent">' + esc(proj.title) + "</span>");
     line(esc(proj.summary));
@@ -282,10 +348,26 @@
   }
 
   function onKey(e) {
+    // Real-time games own the keyboard via a document-level listener.
+    if (rawKeyHandler) return;
+
     if (e.key === "Enter") {
-      run(inputEl.value);
+      var val = inputEl.value;
       inputEl.value = "";
-    } else if (e.key === "ArrowUp") {
+      if (lineInputHandler) {
+        line('<span class="term-prompt">' + esc(gamePromptText) + "</span> " +
+          '<span class="term-cmd-echo">' + esc(val) + "</span>");
+        lineInputHandler(val.trim());
+        scrollToEnd();
+        return;
+      }
+      run(val);
+      return;
+    }
+
+    if (lineInputHandler) return; // no history/tab while a turn-based game is active
+
+    if (e.key === "ArrowUp") {
       if (histIdx > 0) { histIdx--; inputEl.value = history[histIdx] || ""; }
       e.preventDefault();
     } else if (e.key === "ArrowDown") {
@@ -323,6 +405,10 @@
     inputEl.setAttribute("autocapitalize", "off");
     inputEl.setAttribute("spellcheck", "false");
     inputLine.appendChild(inputEl);
+
+    inputLineEl = inputLine;
+    promptEl = inputLine.querySelector(".term-prompt");
+    promptHTML = promptEl ? promptEl.innerHTML : "";
 
     wrap.appendChild(outputEl);
     wrap.appendChild(inputLine);
