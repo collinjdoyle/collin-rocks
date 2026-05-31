@@ -10,10 +10,10 @@ const SITE = {
       "leading IT operations and building secure, scalable infrastructure. " +
       "I live in the space between enterprise ops and the homelab.",
     bio: [
-      "I run and manage IT end to end: 365, Azure, Entra ID, Intune MDM," +
+      "I run and manage IT end to end: 365, Azure, Entra ID, Intune MDM, " +
         "SSO/SAML integrations, local networks, servers, VPNs, Exchange, and " +
         "other cloud services like AWS and Google Cloud. All kept secure, up to date and reliable.",
-        "Beyond traditional IT I lean hard into automations and have made it my goal to automate" +
+        "Beyond traditional IT I lean hard into automations and have made it my goal to automate " +
         "anything I can using a combination of local AI, classic logic, and some close kept secrets!",
     ],
     stack: [
