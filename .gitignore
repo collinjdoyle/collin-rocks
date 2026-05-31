@@ -1,0 +1,11 @@
+# Claude Code working directory
+.claude/
+
+# Build instructions / scratch docs (not part of the deployed site)
+collin-rocks-build-guide.md
+ONBOARDING.md
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
