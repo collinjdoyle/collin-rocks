@@ -116,6 +116,13 @@
       var key = (args[0] || "").toLowerCase();
       if (!key) { line('<span class="term-err">usage: cat &lt;project|post&gt;</span>'); return; }
 
+      var exact = SITE.posts.filter(function (p) { return p.slug === key; })[0];
+      if (exact) {
+        document.dispatchEvent(new CustomEvent("blog:open", { detail: { slug: exact.slug } }));
+        line('<span class="term-muted">opening post in blog window…</span>');
+        return;
+      }
+
       var proj = null;
       if (/^\d+$/.test(key)) proj = SITE.projects[parseInt(key, 10) - 1];
       if (!proj) {
@@ -301,6 +308,9 @@
       });
     } else {
       line('<span class="term-muted">  (private — no public link)</span>');
+    }
+    if (proj.post) {
+      line('  <span class="term-green">writeup: </span><span class="term-yellow">cat ' + esc(proj.post) + "</span>");
     }
   }
 

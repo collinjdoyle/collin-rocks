@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — command not found · collin.rocks</title>
+  <meta name="description" content="That page doesn't exist." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://collin.rocks/404.html" />
+  <meta property="og:title" content="404 — command not found · collin.rocks" />
+  <meta property="og:description" content="That page doesn't exist." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://collin.rocks/404.html" />
+  <meta property="og:image" content="https://collin.rocks/assets/og/default.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://collin.rocks/assets/og/default.png" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <script>try{var t=localStorage.getItem("collin-rocks-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <meta name="robots" content="noindex" />
+</head>
+<body class="page">
+  <header class="page__bar">
+    <a class="statusbar__handle" href="/">collin@rocks</a>
+    <nav class="page__nav"><a href="/writeups/">writeups</a><a href="/#resume">resume</a><a href="/">desktop →</a></nav>
+  </header>
+  <main class="page__main post-body">
+<div class="notfound">
+<p class="notfound__prompt"><span class="term-green">collin@rocks</span>:<span class="term-accent">~</span>$ cd <span id="nf-path">this-page</span></p>
+<p class="term-err">bash: cd: <span id="nf-path2">this-page</span>: No such file or directory</p>
+<p class="notfound__code">404</p>
+<p>That page doesn't exist (or it moved). Try one of these:</p>
+<pre><code>$ ls
+<a href="/">desktop/</a>      the full site
+<a href="/writeups/">writeups/</a>     apps and automations I've built
+<a href="/#resume">resume</a>        experience and certifications
+<a href="/#contact">contact</a>       get in touch</code></pre>
+</div>
+<script>
+  var p = decodeURIComponent(location.pathname.split("/").filter(Boolean).join("/")) || "this-page";
+  document.getElementById("nf-path").textContent = p;
+  document.getElementById("nf-path2").textContent = p;
+</script>
+  </main>
+  <footer class="page__foot">
+    <a href="/">collin.rocks</a> · <a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a> · <a href="https://github.com/CollinJDoyle">GitHub</a> · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+  </footer>
+</body>
+</html>

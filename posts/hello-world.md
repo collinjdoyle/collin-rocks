@@ -7,7 +7,7 @@ are what you're after.
 
 ## Why a terminal?
 
-Its neat. 
+It's neat.
 The whole site reads from a single data file, and the terminal and the windowed view 
 are just two front-ends over the same content.
 

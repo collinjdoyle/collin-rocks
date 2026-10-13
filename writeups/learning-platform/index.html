@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning platform: assign once, everyone's trained — Collin Doyle</title>
+  <meta name="description" content="Internal training and onboarding: training builder, self-grading quizzes, group assignments via SCIM, Slack reminders and certificates." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://collin.rocks/writeups/learning-platform/" />
+  <meta property="og:title" content="Learning platform: assign once, everyone's trained — Collin Doyle" />
+  <meta property="og:description" content="Internal training and onboarding: training builder, self-grading quizzes, group assignments via SCIM, Slack reminders and certificates." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://collin.rocks/writeups/learning-platform/" />
+  <meta property="og:image" content="https://collin.rocks/assets/og/learning-platform.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://collin.rocks/assets/og/learning-platform.png" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <script>try{var t=localStorage.getItem("collin-rocks-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Learning platform: assign once, everyone's trained","description":"Internal training and onboarding: training builder, self-grading quizzes, group assignments via SCIM, Slack reminders and certificates.","datePublished":"2026-10-12","url":"https://collin.rocks/writeups/learning-platform/","image":"https://collin.rocks/assets/og/learning-platform.png","author":{"@type":"Person","name":"Collin Doyle","url":"https://collin.rocks/"}}</script>
+</head>
+<body class="page">
+  <header class="page__bar">
+    <a class="statusbar__handle" href="../../">collin@rocks</a>
+    <nav class="page__nav"><a href="../../writeups/">writeups</a><a href="../../#resume">resume</a><a href="../../">desktop →</a></nav>
+  </header>
+  <main class="page__main post-body">
+<p class="post-item__meta">2026-10-12 · Collin Doyle</p>
+<h1>Learning platform: assign once, everyone's trained</h1>
+<p>Training lived in a shared drive, plus the occasional "did you read the doc?" message. Nobody could tell who had finished, and paying per seat for an enterprise LMS to host a handful of internal courses didn't make sense. So I built a learning platform that fits how the company already works: <strong>SSO, directory groups and Slack</strong>.</p>
+<h2>What I built</h2>
+<ul><li><strong>Training builder.</strong> A training is a flow of modules and steps. A step can be:<ul><li>rich text;</li><li>a slide deck (PowerPoint files are converted automatically);</li><li>an embedded step-by-step guide;</li><li>a video;</li><li>a quiz.</li></ul><p>Steps live in a shared library and can be reused in any training.</p></li><li><strong>Self-grading quizzes</strong> with pass thresholds and instant feedback.</li><li><strong>Assignments to people or whole directory groups</strong>, with due dates. Group assignments stay live: anyone who joins the group later is enrolled automatically on their next sign-in. Users and groups are provisioned over SCIM.</li><li><strong>Slack built in:</strong><ul><li>DMs for new assignments and reminders;</li><li>completion announcements;</li><li>an optional DM to the manager each time someone on their team finishes.</li></ul></li><li><strong>Certificates.</strong> Finishing a training can award a shareable completion certificate.</li><li><strong>Manager views.</strong> Team managers see their team's progress and assignments without needing admin access.</li><li><strong>Feedback loop.</strong> In-app feedback goes to Slack and can open a ticket automatically.</li></ul>
+<h2>How it saves time</h2>
+<ul><li><strong>Onboarding training happens without anyone setting it up.</strong> A new hire lands in the right group, so their first-week training is already waiting.</li><li><strong>Managers stop chasing.</strong> Slack tells them when each person finishes, and the team view shows who's behind.</li><li><strong>Build once, reuse everywhere.</strong> A security module written once can be added to every training that needs it.</li></ul>
+<h2>How it saves money</h2>
+<ul><li><strong>No per-seat LMS licence.</strong> Commercial learning platforms usually charge per user, per month. This runs on infrastructure the company already has.</li><li><strong>Faster ramp-up.</strong> New hires get structured, trackable training in week one instead of piecing it together themselves.</li><li><strong>Compliance evidence on demand.</strong> Completion records and quiz results answer "who's been trained?" without a scramble.</li></ul>
+<h2>Stack</h2>
+<div class="table-wrap"><table><thead><tr><th>Layer</th><th>Tech</th></tr></thead><tbody><tr><td>Frontend</td><td>React 18, Vite, TypeScript, Tailwind, MSAL</td></tr><tr><td>Backend</td><td>Node.js 22, Express, Prisma, PostgreSQL 16</td></tr><tr><td>Identity</td><td>Entra ID SSO and SCIM</td></tr><tr><td>Integrations</td><td>Slack API, LibreOffice for slide conversion</td></tr><tr><td>Deploy</td><td>GitHub Actions, GHCR, Rancher Fleet</td></tr></tbody></table></div>
+<div class="tags"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Postgres</span><span class="tag">SCIM</span><span class="tag">Slack</span></div>
+<p class="page__more"><a href="../">← all writeups</a></p>
+  </main>
+  <footer class="page__foot">
+    <a href="../../">collin.rocks</a> · <a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a> · <a href="https://github.com/CollinJDoyle">GitHub</a> · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+  </footer>
+</body>
+</html>

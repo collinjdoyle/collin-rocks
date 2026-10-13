@@ -86,7 +86,7 @@
   function buildProjects() {
     var wrap = el("div");
     wrap.appendChild(el("h2", "win-h", "projects"));
-    wrap.appendChild(el("p", "win-sub", "Things I'm working on."));
+    wrap.appendChild(el("p", "win-sub", "Internal apps I designed and built (writeups inside), plus the homelab."));
     SITE.projects.forEach(function (proj) {
       var box = el("div", "project");
       box.appendChild(el("div", "project__title", esc(proj.title)));
@@ -95,6 +95,11 @@
         var t = el("div", "tags");
         proj.tags.forEach(function (tag) { t.appendChild(el("span", "tag", esc(tag))); });
         box.appendChild(t);
+      }
+      if (proj.post) {
+        var w = el("a", "project__writeup", "read the writeup →");
+        w.href = "#post/" + proj.post;
+        box.appendChild(w);
       }
       if (proj.links && proj.links.length) {
         var links = el("div", "project__links");
@@ -127,7 +132,7 @@
 
     if (SITE.certifications && SITE.certifications.length) {
       var c = SITE.certifications.map(function (x) {
-        return esc(x.name) + " · " + esc(x.issuer) + (x.year ? " (" + esc(x.year) + ")" : "");
+        return esc(x.name) + (x.year ? " (" + esc(x.year) + ")" : "");
       }).join(" · ");
       wrap.appendChild(el("p", "cert", c));
     }
@@ -148,6 +153,13 @@
       }
       wrap.appendChild(j);
     });
+
+    if (SITE.education && SITE.education.length) {
+      wrap.appendChild(el("h3", "win-h3", "education"));
+      var edu = el("ul", "edu");
+      SITE.education.forEach(function (e) { edu.appendChild(el("li", null, esc(e))); });
+      wrap.appendChild(edu);
+    }
     return wrap;
   }
 
@@ -190,8 +202,12 @@
   }
   function openPost(wrap, post) {
     wrap.innerHTML = "";
+    setHash("post/" + post.slug);
     var back = el("button", "back-link", "← back to posts");
-    back.addEventListener("click", function () { renderBlogList(wrap); });
+    back.addEventListener("click", function () {
+      setHash("");
+      renderBlogList(wrap);
+    });
     wrap.appendChild(back);
     var body = el("div", "post-body");
     body.appendChild(el("p", "post-item__meta", esc(post.date)));
@@ -200,61 +216,18 @@
 
     fetch(post.file)
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
-      .then(function (md) { body.innerHTML = miniMarkdown(md); })
+      .then(function (md) {
+        body.innerHTML = '<p class="post-item__meta">' + esc(post.date) +
+          ' · <a href="writeups/' + esc(post.slug) + '/">permalink</a></p>' + window.miniMarkdown(md);
+        document.title = post.title + " — collin.rocks";
+        trackView("/writeups/" + post.slug + "/", post.title);
+      })
       .catch(function () {
         body.innerHTML =
           '<p class="term-err">Couldn\'t load this post.</p>' +
           '<p class="muted">Try again in a moment, or ' +
           '<a href="' + esc(post.file) + '">open it directly</a>.</p>';
       });
-  }
-
-  // Small Markdown -> HTML: headings, bold/italic/code, fences, links, lists, quotes.
-  function miniMarkdown(md) {
-    var lines = md.replace(/\r\n/g, "\n").split("\n");
-    var out = [], i = 0;
-
-    function inline(s) {
-      return esc(s)
-        .replace(/`([^`]+)`/g, "<code>$1</code>")
-        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g,
-          '<a href="$2" target="_blank" rel="noopener">$1</a>');
-    }
-
-    while (i < lines.length) {
-      var ln = lines[i];
-
-      if (/^```/.test(ln)) {                       // fenced code
-        var buf = []; i++;
-        while (i < lines.length && !/^```/.test(lines[i])) { buf.push(lines[i]); i++; }
-        i++;
-        out.push("<pre><code>" + esc(buf.join("\n")) + "</code></pre>");
-        continue;
-      }
-      var h = ln.match(/^(#{1,4})\s+(.*)$/);        // headings
-      if (h) { out.push("<h" + h[1].length + ">" + inline(h[2]) + "</h" + h[1].length + ">"); i++; continue; }
-
-      if (/^>\s?/.test(ln)) {                       // blockquote
-        out.push("<blockquote>" + inline(ln.replace(/^>\s?/, "")) + "</blockquote>"); i++; continue;
-      }
-      if (/^[-*]\s+/.test(ln)) {                    // unordered list
-        var items = [];
-        while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
-          items.push("<li>" + inline(lines[i].replace(/^[-*]\s+/, "")) + "</li>"); i++;
-        }
-        out.push("<ul>" + items.join("") + "</ul>");
-        continue;
-      }
-      if (/^\s*$/.test(ln)) { i++; continue; }      // blank
-
-      var para = [ln]; i++;                          // paragraph
-      while (i < lines.length && !/^\s*$/.test(lines[i]) &&
-             !/^(#{1,4}\s|>\s?|[-*]\s|```)/.test(lines[i])) { para.push(lines[i]); i++; }
-      out.push("<p>" + inline(para.join(" ")) + "</p>");
-    }
-    return out.join("\n");
   }
 
   function registerWindows() {
@@ -267,9 +240,9 @@
     var termY = Math.max(16, Math.round((dh - termH) / 2));
 
     WM.register("about",    { title: "about — collin",  build: buildAbout,    defaults: { x: 40,  y: 34,  w: 720 } });
-    WM.register("projects", { title: "projects",         build: buildProjects, defaults: { x: 60,  y: 120, w: 460, h: 360 } });
+    WM.register("projects", { title: "projects",         build: buildProjects, defaults: { x: 60,  y: 90,  w: 560, h: 440 } });
     WM.register("resume",   { title: "resume",           build: buildResume,   defaults: { x: 90,  y: 150, w: 480, h: 380 } });
-    WM.register("blog",     { title: "blog",             build: buildBlog,     defaults: { x: 540, y: 170, w: 440 } });
+    WM.register("blog",     { title: "blog",             build: buildBlog,     defaults: { x: 420, y: 60,  w: 640 } });
     WM.register("contact",  { title: "contact",          build: buildContact,  defaults: { x: 150, y: 200, w: 400 } });
     WM.register("terminal", {
       title: "terminal@collin.rocks", className: "terminal",
@@ -278,13 +251,66 @@
     });
   }
 
-  document.addEventListener("blog:open", function (e) {
+  // Posts get shareable URLs: collin.rocks/#post/<slug>
+  var BASE_TITLE = document.title;
+  function setHash(h) {
+    if (h ? window.location.hash === "#" + h : !window.location.hash) return;
+    try {
+      history.replaceState(null, "", h ? "#" + h : window.location.pathname + window.location.search);
+    } catch (_) {}
+    if (!h) document.title = BASE_TITLE;
+  }
+  function openPostBySlug(slug) {
+    var post = SITE.posts.filter(function (p) { return p.slug === slug; })[0];
+    if (!post) return false;
+    if (window.matchMedia("(max-width: 720px)").matches) {   // mobile: one section at a time
+      ["about", "projects", "resume", "contact", "terminal"].forEach(function (id) {
+        if (WM.isOpen(id)) WM.close(id);
+      });
+      window.scrollTo({ top: 0 });
+    }
+    if (!WM.isOpen("blog")) WM.open("blog");
     var wrap = document.querySelector('[data-win="blog"] .window__body > div');
-    var post = SITE.posts.filter(function (p) { return p.slug === e.detail.slug; })[0];
-    if (wrap && post) openPost(wrap, post);
-  });
+    if (wrap) openPost(wrap, post);
+    return true;
+  }
+  function routeFromHash() {
+    var m = window.location.hash.match(/^#post\/([a-z0-9-]+)$/);
+    if (m) return openPostBySlug(m[1]);
+    var win = window.location.hash.slice(1);             // #resume, #projects, #contact …
+    if (["projects", "resume", "blog", "contact", "terminal"].indexOf(win) !== -1) {
+      if (window.matchMedia("(max-width: 720px)").matches && WM.isOpen("about")) WM.close("about");
+      WM.open(win);
+      return true;
+    }
+    return false;
+  }
+  window.addEventListener("hashchange", routeFromHash);
+
+  document.addEventListener("blog:open", function (e) { openPostBySlug(e.detail.slug); });
+
+  // Cookie-free analytics (GoatCounter). No-op until SITE.analytics.goatcounter is set.
+  var GC = SITE.analytics && SITE.analytics.goatcounter;
+  function loadAnalytics() {
+    if (!GC) return;
+    window.goatcounter = { no_onload: true };
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://gc.zgo.at/count.js";
+    s.setAttribute("data-goatcounter", "https://" + GC + ".goatcounter.com/count");
+    s.onload = function () {        // first view: the post a shared link points at, else the desktop
+      var m = window.location.hash.match(/^#post\/([a-z0-9-]+)$/);
+      trackView(m ? "/writeups/" + m[1] + "/" : "/");
+    };
+    document.head.appendChild(s);
+  }
+  function trackView(path, title) {
+    if (!GC || !window.goatcounter || !window.goatcounter.count) return;
+    window.goatcounter.count({ path: path || "/", title: title || document.title });
+  }
 
   function boot() {
+    loadAnalytics();
     WM._init();
     registerWindows();
 
@@ -330,6 +356,7 @@
 
     // only about opens on load; everything else is reachable from the dock.
     WM.open("about");
+    routeFromHash();
   }
 
   if (document.readyState === "loading") {
