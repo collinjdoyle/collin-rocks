@@ -218,7 +218,7 @@
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
       .then(function (md) {
         body.innerHTML = '<p class="post-item__meta">' + esc(post.date) +
-          ' · <a href="writeups/' + esc(post.slug) + '/">permalink</a></p>' + window.miniMarkdown(md);
+          ' · <a href="/writeups/' + esc(post.slug) + '/">permalink</a></p>' + window.miniMarkdown(md);
         document.title = post.title + " — collin.rocks";
         trackView("/writeups/" + post.slug + "/", post.title);
       })

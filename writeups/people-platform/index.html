@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="tokyo-night">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>People platform: the directory that builds the account — Collin Doyle</title>
   <meta name="description" content="Employee directory and identity automation. It's the people source of truth: it syncs from Entra ID, shows HR and Legal compliance views, and builds new-hire accounts on approval." />
-  <meta name="color-scheme" content="dark" />
   <link rel="canonical" href="https://collin.rocks/writeups/people-platform/" />
   <meta property="og:title" content="People platform: the directory that builds the account — Collin Doyle" />
   <meta property="og:description" content="Employee directory and identity automation. It's the people source of truth: it syncs from Entra ID, shows HR and Legal compliance views, and builds new-hire accounts on approval." />
@@ -16,22 +15,42 @@
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://collin.rocks/assets/og/people-platform.png" />
-  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin" />
-  <link rel="stylesheet" href="../../css/styles.css" />
-  <script>try{var t=localStorage.getItem("collin-rocks-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="/css/site.css" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"People platform: the directory that builds the account","description":"Employee directory and identity automation. It's the people source of truth: it syncs from Entra ID, shows HR and Legal compliance views, and builds new-hire accounts on approval.","datePublished":"2026-10-12","url":"https://collin.rocks/writeups/people-platform/","image":"https://collin.rocks/assets/og/people-platform.png","author":{"@type":"Person","name":"Collin Doyle","url":"https://collin.rocks/"}}</script>
 </head>
-<body class="page">
-  <header class="page__bar">
-    <a class="statusbar__handle" href="../../">collin@rocks</a>
-    <nav class="page__nav"><a href="../../writeups/">writeups</a><a href="../../#resume">resume</a><a href="../../">desktop →</a></nav>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="/">collin<span>.rocks</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/#work">Work</a>
+        <a href="/#experience">Experience</a>
+        <a href="/writeups/">Write-ups</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <a class="btn btn--dark btn--sm head-cta" href="/assets/resume.pdf">Résumé (PDF)</a>
+    </div>
   </header>
-  <main class="page__main post-body">
-<p class="post-item__meta">2026-10-12 · Collin Doyle</p>
-<h1>People platform: the directory that builds the account</h1>
+  <main id="content">
+  <article>
+    <header class="wrap article-head">
+      <a class="back" href="/#work">← All work</a>
+      <p class="kicker">Case study · 2 min read</p>
+      <h1 class="h1">People platform: the directory that builds the account</h1>
+      <p class="lede">Employee directory and identity automation. It's the people source of truth: it syncs from Entra ID, shows HR and Legal compliance views, and builds new-hire accounts on approval.</p>
+      <dl class="meta">
+        <div><dt>My role</dt><dd>Designed, built and run it</dd></div>
+        <div><dt>Built with</dt><dd>React · Node.js · Postgres · Microsoft Graph · EKS</dd></div>
+        <div><dt>Published</dt><dd>October 12, 2026</dd></div>
+      </dl>
+    </header>
+    <div class="wrap">
+      <div class="prose">
 <p>Every company has a "source of truth" for people. Usually it's three spreadsheets plus the identity provider, and none of them agree. I built a people platform that syncs from Entra ID and holds the extra fields HR and Legal need. Then I took it further: it <strong>onboards new hires itself</strong>.</p>
 <h2>What I built</h2>
 <ul><li><strong>Employee directory</strong> synced from Entra ID on a schedule. It holds the fields the identity provider doesn't: department history, contractor status, start dates, security-training results and data-access flags.</li><li><strong>Compliance views for HR and Legal.</strong> A dedicated role shows who has passed security training, who is overdue, and who can reach source code or protected data. Reports export to CSV for auditors.</li><li><strong>Full audit log.</strong> Every change records who made it, with the before and after values.</li><li><strong>Onboarding engine.</strong> A service-desk ticket arrives as a staged plan. IT reviews it and approves, and the platform creates:<ul><li>the Entra user, licence and manager;</li><li>groups and Exchange distribution lists;</li><li>an encrypted Temporary Access Pass;</li><li>the employee record.</li></ul><p>Every step is idempotent and can be retried. Old runs can be archived, and their logs are kept.</p></li><li><strong>Event fan-out.</strong> Signed webhooks such as <code>employee.onboarded</code> keep the other internal apps in sync. People data starts in one place.</li></ul>
@@ -43,11 +62,19 @@
 <ul><li><strong>No separate provisioning tool</strong> is needed for the core joiner workflow. It runs on licences the company already has.</li><li><strong>Audit-ready by default.</strong> Fewer hours go into pulling evidence together at audit time.</li><li><strong>Fewer access mistakes.</strong> Group membership follows rules, so there are fewer over-provisioned accounts to find and fix later.</li></ul>
 <h2>Stack</h2>
 <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Tech</th></tr></thead><tbody><tr><td>App</td><td>React, Node.js/Express</td></tr><tr><td>Data</td><td>PostgreSQL with Prisma</td></tr><tr><td>Identity &amp; mail</td><td>Microsoft Graph, Exchange Online</td></tr><tr><td>Workflow</td><td>Jira Service Management automation, Slack</td></tr><tr><td>Deploy</td><td>Docker, Kubernetes on AWS EKS, Argo CD</td></tr></tbody></table></div>
-<div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Postgres</span><span class="tag">Microsoft Graph</span><span class="tag">EKS</span></div>
-<p class="page__more"><a href="../">← all writeups</a></p>
+      </div>
+      <nav class="pager" aria-label="More write-ups">
+        <a class="pager__back" href="/writeups/"><small>← Back</small><strong>All write-ups</strong></a>
+        <a class="pager__next" href="../it-inventory/"><small>Next write-up →</small><strong>IT inventory: every laptop and USB stick, scannable</strong></a>
+      </nav>
+    </div>
+  </article>
   </main>
-  <footer class="page__foot">
-    <a href="../../">collin.rocks</a> · <a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a> · <a href="https://github.com/CollinJDoyle">GitHub</a> · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+  <footer class="site-foot">
+    <div class="wrap">
+      <p>© 2026 Collin Doyle · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a></p>
+      <a class="term-link" href="/terminal/">collin@rocks:~$ open terminal_</a>
+    </div>
   </footer>
 </body>
 </html>

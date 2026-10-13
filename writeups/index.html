@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="tokyo-night">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Writeups — Collin Doyle</title>
+  <title>Write-ups — Collin Doyle</title>
   <meta name="description" content="Internal apps and automations I designed and built: what they do, the time they save and the money they save." />
-  <meta name="color-scheme" content="dark" />
   <link rel="canonical" href="https://collin.rocks/writeups/" />
-  <meta property="og:title" content="Writeups — Collin Doyle" />
+  <meta property="og:title" content="Write-ups — Collin Doyle" />
   <meta property="og:description" content="Internal apps and automations I designed and built: what they do, the time they save and the money they save." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://collin.rocks/writeups/" />
@@ -16,31 +15,50 @@
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://collin.rocks/assets/og/default.png" />
-  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin" />
-  <link rel="stylesheet" href="../css/styles.css" />
-  <script>try{var t=localStorage.getItem("collin-rocks-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="/css/site.css" />
 </head>
-<body class="page">
-  <header class="page__bar">
-    <a class="statusbar__handle" href="../">collin@rocks</a>
-    <nav class="page__nav"><a href="../writeups/">writeups</a><a href="../#resume">resume</a><a href="../">desktop →</a></nav>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="/">collin<span>.rocks</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/#work">Work</a>
+        <a href="/#experience">Experience</a>
+        <a href="/writeups/">Write-ups</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <a class="btn btn--dark btn--sm head-cta" href="/assets/resume.pdf">Résumé (PDF)</a>
+    </div>
   </header>
-  <main class="page__main post-body">
-<h1>Writeups</h1>
-<p>Internal apps and automations I designed and built: what they do, how they save time, and how they save money.</p>
-<div class="post-item"><a class="post-item__title" href="zero-touch-onboarding/">One form to a trained new hire: automating onboarding</a><div class="post-item__meta">One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically.</div></div>
-<div class="post-item"><a class="post-item__title" href="bare-metal-kubernetes/">Bare-metal Kubernetes: the platform the internal apps run on</a><div class="post-item__meta">On-prem RKE2 cluster I built from scratch as the default home for internal apps: pull-based GitOps, nightly-backed storage, automatic TLS and DNS, hardened workloads and a local GPU for AI.</div></div>
-<div class="post-item"><a class="post-item__title" href="people-platform/">People platform: the directory that builds the account</a><div class="post-item__meta">Employee directory and identity automation. It's the people source of truth: it syncs from Entra ID, shows HR and Legal compliance views, and builds new-hire accounts on approval.</div></div>
-<div class="post-item"><a class="post-item__title" href="it-inventory/">IT inventory: every laptop and USB stick, scannable</a><div class="post-item__meta">Scannable inventory (PWA) for every asset and consumable: QR labels, phone scanning, shelf audits, checkouts, and Jamf / Intune device sync.</div></div>
-<div class="post-item"><a class="post-item__title" href="learning-platform/">Learning platform: assign once, everyone's trained</a><div class="post-item__meta">Internal training and onboarding: training builder, self-grading quizzes, group assignments via SCIM, Slack reminders and certificates.</div></div>
-<div class="post-item"><a class="post-item__title" href="employee-hub/">Employee hub: rooms, desks and apps in one place</a><div class="post-item__meta">Live conference-room status (calendars + Zoom Rooms) on a TV kiosk, a searchable floor plan, an SSO app launcher and access requests.</div></div>
-<div class="post-item"><a class="post-item__title" href="domain-manager/">Domain manager: three registrars, one table</a><div class="post-item__meta">Every domain across three registrars in one table: expiry tracking, renewal-cost forecasts and weekly blacklist checks.</div></div>
+  <main id="content">
+  <div class="wrap">
+    <header class="article-head">
+      <a class="back" href="/">← collin.rocks</a>
+      <p class="kicker">Write-ups</p>
+      <h1 class="h1">How it's built</h1>
+      <p class="lede">Internal apps and automations I designed and built: what they do, how they save time, and how they save money.</p>
+    </header>
+    <ul class="post-list">
+      <li><a href="zero-touch-onboarding/"><span class="post-list__title">One form to a trained new hire: automating onboarding</span><span class="post-list__sum">One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically.</span></a></li>
+      <li><a href="bare-metal-kubernetes/"><span class="post-list__title">Bare-metal Kubernetes: the platform the internal apps run on</span><span class="post-list__sum">On-prem RKE2 cluster I built from scratch as the default home for internal apps: pull-based GitOps, nightly-backed storage, automatic TLS and DNS, hardened workloads and a local GPU for AI.</span></a></li>
+      <li><a href="people-platform/"><span class="post-list__title">People platform: the directory that builds the account</span><span class="post-list__sum">Employee directory and identity automation. It's the people source of truth: it syncs from Entra ID, shows HR and Legal compliance views, and builds new-hire accounts on approval.</span></a></li>
+      <li><a href="it-inventory/"><span class="post-list__title">IT inventory: every laptop and USB stick, scannable</span><span class="post-list__sum">Scannable inventory (PWA) for every asset and consumable: QR labels, phone scanning, shelf audits, checkouts, and Jamf / Intune device sync.</span></a></li>
+      <li><a href="learning-platform/"><span class="post-list__title">Learning platform: assign once, everyone's trained</span><span class="post-list__sum">Internal training and onboarding: training builder, self-grading quizzes, group assignments via SCIM, Slack reminders and certificates.</span></a></li>
+      <li><a href="employee-hub/"><span class="post-list__title">Employee hub: rooms, desks and apps in one place</span><span class="post-list__sum">Live conference-room status (calendars + Zoom Rooms) on a TV kiosk, a searchable floor plan, an SSO app launcher and access requests.</span></a></li>
+      <li><a href="domain-manager/"><span class="post-list__title">Domain manager: three registrars, one table</span><span class="post-list__sum">Every domain across three registrars in one table: expiry tracking, renewal-cost forecasts and weekly blacklist checks.</span></a></li>
+    </ul>
+  </div>
   </main>
-  <footer class="page__foot">
-    <a href="../">collin.rocks</a> · <a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a> · <a href="https://github.com/CollinJDoyle">GitHub</a> · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+  <footer class="site-foot">
+    <div class="wrap">
+      <p>© 2026 Collin Doyle · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a></p>
+      <a class="term-link" href="/terminal/">collin@rocks:~$ open terminal_</a>
+    </div>
   </footer>
 </body>
 </html>

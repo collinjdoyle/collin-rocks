@@ -54,6 +54,12 @@ const SITE = {
       tags: ["Automation", "Entra ID", "Jira SM", "Slack", "Webhooks"],
       links: [],
       post: "zero-touch-onboarding",
+      // Optional: shown as the results band on the writeup page.
+      results: [
+        { value: "4–6 hrs → <1", label: "New-hire setup time. The account itself is now a few minutes of review." },
+        { value: "15+ → 1", label: "Manual steps across admin portals, the ticket and Slack, replaced by one approval." },
+        { value: "No new tools", label: "Built on the identity provider, service desk, Slack and cluster already paid for." },
+      ],
     },
     {
       title: "Bare-metal Kubernetes platform",
@@ -223,64 +229,64 @@ const SITE = {
   // Empty = no analytics anywhere.
   analytics: { goatcounter: "" },
 
-  resumePdf: "assets/resume.pdf",
-  resumePdfFull: "assets/resume-full.pdf",
+  resumePdf: "/assets/resume.pdf",
+  resumePdfFull: "/assets/resume-full.pdf",
 
   posts: [
     {
       slug: "zero-touch-onboarding",
       title: "One form to a trained new hire: automating onboarding",
       date: "2026-10-12",
-      file: "posts/zero-touch-onboarding.md",
+      file: "/posts/zero-touch-onboarding.md",
       summary: "How one HR form and one approval replaced an hour of manual setup.",
     },
     {
       slug: "bare-metal-kubernetes",
       title: "Bare-metal Kubernetes: the platform the internal apps run on",
       date: "2026-10-12",
-      file: "posts/bare-metal-kubernetes.md",
+      file: "/posts/bare-metal-kubernetes.md",
       summary: "RKE2, GitOps, backed-up storage and on-prem AI for internal apps.",
     },
     {
       slug: "people-platform",
       title: "People platform: the directory that builds the account",
       date: "2026-10-12",
-      file: "posts/people-platform.md",
+      file: "/posts/people-platform.md",
       summary: "Directory, compliance views and an approval-gated onboarding engine.",
     },
     {
       slug: "it-inventory",
       title: "IT inventory: every laptop and USB stick, scannable",
       date: "2026-10-12",
-      file: "posts/it-inventory.md",
+      file: "/posts/it-inventory.md",
       summary: "QR labels, phone scanning, audits in minutes, MDM sync.",
     },
     {
       slug: "learning-platform",
       title: "Learning platform: assign once, everyone's trained",
       date: "2026-10-12",
-      file: "posts/learning-platform.md",
+      file: "/posts/learning-platform.md",
       summary: "Trainings, quizzes and certificates, wired to SSO groups and Slack.",
     },
     {
       slug: "employee-hub",
       title: "Employee hub: rooms, desks and apps in one place",
       date: "2026-10-12",
-      file: "posts/employee-hub.md",
+      file: "/posts/employee-hub.md",
       summary: "Live room status on a TV, a searchable floor plan and an app launcher.",
     },
     {
       slug: "domain-manager",
       title: "Domain manager: three registrars, one table",
       date: "2026-10-12",
-      file: "posts/domain-manager.md",
+      file: "/posts/domain-manager.md",
       summary: "Expiry tracking, renewal forecasts and blacklist checks.",
     },
     {
       slug: "hello-world",
       title: "Hello, world",
       date: "2026-05-30",
-      file: "posts/hello-world.md",
+      file: "/posts/hello-world.md",
       summary: "Hello.",
     },
   ],

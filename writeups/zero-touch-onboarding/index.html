@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="tokyo-night">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>One form to a trained new hire: automating onboarding — Collin Doyle</title>
   <meta name="description" content="One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically." />
-  <meta name="color-scheme" content="dark" />
   <link rel="canonical" href="https://collin.rocks/writeups/zero-touch-onboarding/" />
   <meta property="og:title" content="One form to a trained new hire: automating onboarding — Collin Doyle" />
   <meta property="og:description" content="One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically." />
@@ -16,22 +15,52 @@
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://collin.rocks/assets/og/zero-touch-onboarding.png" />
-  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin" />
-  <link rel="stylesheet" href="../../css/styles.css" />
-  <script>try{var t=localStorage.getItem("collin-rocks-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="/css/site.css" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"One form to a trained new hire: automating onboarding","description":"One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically.","datePublished":"2026-10-12","url":"https://collin.rocks/writeups/zero-touch-onboarding/","image":"https://collin.rocks/assets/og/zero-touch-onboarding.png","author":{"@type":"Person","name":"Collin Doyle","url":"https://collin.rocks/"}}</script>
 </head>
-<body class="page">
-  <header class="page__bar">
-    <a class="statusbar__handle" href="../../">collin@rocks</a>
-    <nav class="page__nav"><a href="../../writeups/">writeups</a><a href="../../#resume">resume</a><a href="../../">desktop →</a></nav>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="/">collin<span>.rocks</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/#work">Work</a>
+        <a href="/#experience">Experience</a>
+        <a href="/writeups/">Write-ups</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <a class="btn btn--dark btn--sm head-cta" href="/assets/resume.pdf">Résumé (PDF)</a>
+    </div>
   </header>
-  <main class="page__main post-body">
-<p class="post-item__meta">2026-10-12 · Collin Doyle</p>
-<h1>One form to a trained new hire: automating employee onboarding</h1>
+  <main id="content">
+  <article>
+    <header class="wrap article-head">
+      <a class="back" href="/#work">← All work</a>
+      <p class="kicker">Case study · 3 min read</p>
+      <h1 class="h1">One form to a trained new hire: automating onboarding</h1>
+      <p class="lede">One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically.</p>
+      <dl class="meta">
+        <div><dt>My role</dt><dd>Designed, built and run it</dd></div>
+        <div><dt>Built with</dt><dd>Automation · Entra ID · Jira SM · Slack · Webhooks</dd></div>
+        <div><dt>Published</dt><dd>October 12, 2026</dd></div>
+      </dl>
+    </header>
+    <section class="results" aria-labelledby="results-title">
+      <div class="wrap">
+        <h2 id="results-title">Results</h2>
+        <ul>
+          <li><strong>4–6 hrs → &lt;1</strong><span>New-hire setup time. The account itself is now a few minutes of review.</span></li>
+          <li><strong>15+ → 1</strong><span>Manual steps across admin portals, the ticket and Slack, replaced by one approval.</span></li>
+          <li><strong>No new tools</strong><span>Built on the identity provider, service desk, Slack and cluster already paid for.</span></li>
+        </ul>
+      </div>
+    </section>
+    <div class="wrap">
+      <div class="prose">
 <p>Onboarding a new hire used to touch five systems and three teams. HR filed a ticket, IT built the account by hand, someone remembered (or forgot) the laptop, and training lived in a shared folder. I designed and built the apps and automations that turn all of that into <strong>one HR form and one IT approval</strong>.</p>
 <p>This post is the overview. Each app has its own writeup.</p>
 <h2>The flow</h2>
@@ -44,11 +73,19 @@
 <ul><li><strong>Apps:</strong> Node.js, React, PostgreSQL and Prisma</li><li><strong>Identity:</strong> Microsoft Graph and Exchange Online</li><li><strong>Workflow:</strong> Jira Service Management automation and the Slack API</li><li><strong>Between services:</strong> signed webhooks</li><li><strong>Deploys:</strong> Docker, Kubernetes, Argo CD and Fleet</li></ul>
 <h2>The apps</h2>
 <ul><li><a href="../people-platform/">People platform</a>: the directory, compliance views and the onboarding engine</li><li><a href="../it-inventory/">IT inventory</a>: every asset, scannable and synced with MDM</li><li><a href="../learning-platform/">Learning platform</a>: trainings, quizzes and certificates</li><li><a href="../employee-hub/">Employee hub</a>: rooms, desks and apps in one place</li><li><a href="../domain-manager/">Domain manager</a>: every domain across three registrars</li><li><a href="../bare-metal-kubernetes/">Bare-metal Kubernetes</a>: the platform all of them run on</li></ul>
-<div class="tags"><span class="tag">Automation</span><span class="tag">Entra ID</span><span class="tag">Jira SM</span><span class="tag">Slack</span><span class="tag">Webhooks</span></div>
-<p class="page__more"><a href="../">← all writeups</a></p>
+      </div>
+      <nav class="pager" aria-label="More write-ups">
+        <a class="pager__back" href="/writeups/"><small>← Back</small><strong>All write-ups</strong></a>
+        <a class="pager__next" href="../bare-metal-kubernetes/"><small>Next write-up →</small><strong>Bare-metal Kubernetes: the platform the internal apps run on</strong></a>
+      </nav>
+    </div>
+  </article>
   </main>
-  <footer class="page__foot">
-    <a href="../../">collin.rocks</a> · <a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a> · <a href="https://github.com/CollinJDoyle">GitHub</a> · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+  <footer class="site-foot">
+    <div class="wrap">
+      <p>© 2026 Collin Doyle · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a></p>
+      <a class="term-link" href="/terminal/">collin@rocks:~$ open terminal_</a>
+    </div>
   </footer>
 </body>
 </html>

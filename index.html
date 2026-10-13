@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="tokyo-night">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Collin Doyle — collin.rocks</title>
-  <meta name="description" content="Collin Doyle — IT Operations &amp; Automation Lead. M365 / Entra ID, Kubernetes, AWS, and internal apps that automate onboarding, inventory and training." />
-  <meta name="color-scheme" content="dark" />
+  <title>Collin Doyle — IT Operations &amp; Automation Lead</title>
+  <meta name="description" content="Collin Doyle — IT Operations &amp; Automation Lead. I lead a systems team and build internal tools on Microsoft 365, Entra ID, AWS and Kubernetes that automate onboarding, inventory and training." />
 
   <!-- Open Graph / social -->
-  <meta property="og:title" content="Collin Doyle — collin.rocks" />
-  <meta property="og:description" content="I manage IT through automation: zero-touch onboarding, inventory, learning and identity apps, Kubernetes, M365 and automation." />
+  <meta property="og:title" content="Collin Doyle — IT Operations &amp; Automation Lead" />
+  <meta property="og:description" content="I run IT through automation, so a small team works like a much larger one." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://collin.rocks/" />
   <meta property="og:image" content="https://collin.rocks/assets/og/default.png" />
@@ -30,93 +29,240 @@
     "sameAs": ["https://github.com/CollinJDoyle", "https://www.linkedin.com/in/collinjdoyle/"]
   }
   </script>
+  <script>
+    // Old desktop-UI links (/#post/<slug>, /#resume …) still land somewhere sensible.
+    (function () {
+      var map = { resume: "experience", projects: "work", blog: "writeups", about: "top" };
+      function route() {
+        var h = location.hash.slice(1), m = h.match(/^post\/([a-z0-9-]+)$/);
+        if (m) location.replace("/writeups/" + m[1] + "/");
+        else if (h === "terminal") location.replace("/terminal/");
+        else if (map.hasOwnProperty(h)) {
+          history.replaceState(null, "", "#" + map[h]);
+          var go = function () { document.getElementById(map[h]).scrollIntoView(); };
+          document.readyState === "loading" ? addEventListener("DOMContentLoaded", go) : go();
+        }
+      }
+      route();
+      addEventListener("hashchange", route);
+    })();
+  </script>
 
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    rel="preload"
-    as="style"
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin"
-  />
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin"
-  />
-
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="/css/site.css" />
 </head>
 <body>
-  <header class="statusbar" role="banner">
-    <div class="statusbar__left">
-      <span class="statusbar__handle">collin@rocks</span>
-    </div>
+  <a class="skip" href="#top">Skip to content</a>
 
-    <div class="statusbar__right">
-      <button
-        id="theme-toggle"
-        class="statusbar__btn"
-        type="button"
-        aria-label="Change theme"
-        title="Change theme (cycle)"
-      >
-        <span aria-hidden="true">◐</span> <span id="theme-name">tokyo-night</span>
-      </button>
-      <time id="clock" class="statusbar__clock" aria-label="Current time">--:--</time>
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="/">collin<span>.rocks</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#writeups">Write-ups</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn--dark btn--sm head-cta" href="/assets/resume.pdf">Résumé (PDF)</a>
     </div>
   </header>
 
-  <main id="desktop" class="desktop" aria-label="Desktop">
+  <main id="top">
 
-    <noscript>
-      <div class="noscript">
-        <h1>Collin Doyle</h1>
-        <p><strong>IT Operations &amp; Automation Lead</strong> — Fort Myers, Florida</p>
-        <p>
-          Systems &amp; network administrator with over a decade of experience
-          leading IT operations and building secure, scalable infrastructure.
-          Main Skills: Microsoft 365 / Entra ID / Intune, networking, AWS, ci/cd, automation, local/cloud
-          AI
-        </p>
-        <h2>Links</h2>
-        <ul>
-          <li><a href="https://github.com/CollinJDoyle">GitHub</a></li>
-          <li><a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a></li>
-          <li><a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a></li>
-          <li><a href="assets/resume.pdf">Download résumé (PDF)</a></li>
-        </ul>
-        <h2>Notable Projects</h2>
-        <ul>
-          <li><strong>Zero-touch employee onboarding</strong> — one HR form and one IT approval build the account, reserve the laptop and assign training. <a href="writeups/zero-touch-onboarding/">Writeup</a></li>
-          <li><strong>Bare-metal Kubernetes platform</strong> — on-prem cluster for internal apps with GitOps, backups and local AI. <a href="writeups/bare-metal-kubernetes/">Writeup</a></li>
-          <li><strong>People platform</strong> — directory, compliance views and approval-gated identity automation. <a href="writeups/people-platform/">Writeup</a></li>
-          <li><strong>IT inventory</strong> — scannable asset tracking with QR labels, audits and MDM sync. <a href="writeups/it-inventory/">Writeup</a></li>
-          <li><strong>Learning platform</strong> — trainings, quizzes, certificates, SCIM groups and Slack. <a href="writeups/learning-platform/">Writeup</a></li>
-          <li><strong>Employee hub</strong> — live room status, floor plan and SSO app launcher. <a href="writeups/employee-hub/">Writeup</a></li>
-          <li><strong>Domain manager</strong> — every domain across three registrars, with expiry and blacklist checks. <a href="writeups/domain-manager/">Writeup</a></li>
-          <li><strong>Homelab - Unraid</strong> — Dockerized app stack, Postgres, full media stack.</li>
-          <li><strong>Homelab - Kubernetes Cluster</strong> — self-managed homelab cluster for containerized workloads.</li>
-        </ul>
-        <p><em>This is the no-JavaScript view. Enable JavaScript for the full interactive desktop.</em></p>
+    <section class="wrap hero" aria-labelledby="hero-title">
+      <div class="hero__main">
+        <p class="eyebrow">Collin Doyle · IT Operations &amp; Automation Lead · Fort Myers, FL</p>
+        <h1 id="hero-title" class="h1">I run IT through automation, so a small team works like a much larger one.</h1>
+        <p class="lede">I lead a systems team and build the internal tools that set up accounts, track hardware and assign training on their own. Ten years in, from the help desk to Microsoft 365, AWS and Kubernetes.</p>
+        <p class="status">Currently leading IT operations and a systems team</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="#work">See the work</a>
+          <a class="btn btn--outline" href="/assets/resume.pdf">Download résumé</a>
+          <a class="btn btn--ghost" href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn ↗</a>
+        </div>
       </div>
-    </noscript>
+
+      <dl class="stats">
+        <div><dt>new-hire setup, down from 4–6 hrs</dt><dd>&lt;1 hr</dd></div>
+        <div><dt>years in IT operations</dt><dd>10+</dd></div>
+        <div><dt>SaaS apps managed</dt><dd>60+</dd></div>
+        <div><dt>internal apps shipped since 2025</dt><dd>20+</dd></div>
+      </dl>
+    </section>
+
+    <section class="strip" aria-label="Core areas">
+      <ul class="wrap">
+        <li>Microsoft 365</li><li>Entra ID &amp; Intune</li><li>SSO / SAML</li><li>AWS · EKS</li><li>Kubernetes (RKE2)</li><li>GitOps</li><li>PowerShell</li><li>Node.js · React · Postgres</li><li>Local AI</li>
+      </ul>
+    </section>
+
+    <section id="work" class="wrap section" aria-labelledby="work-title">
+      <div class="section-head">
+        <div>
+          <p class="kicker">01 · Selected work</p>
+          <h2 id="work-title" class="h2">Platforms that run the office for us</h2>
+        </div>
+        <p class="note">These are internal tools, so there are no public repos. Each one has a write-up on how it works and what it saved.</p>
+      </div>
+
+      <article class="feature">
+        <div class="feature__main">
+          <p class="kicker">Featured case study</p>
+          <h3>Zero-touch onboarding: one form to a trained new hire</h3>
+          <p>One HR form and one IT approval now create the Entra account, licence, groups and mail lists, reserve a laptop, post Slack updates and assign first-week training. Provisioning went from 4–6 hours to under one.</p>
+          <ul class="tags" aria-label="Technologies">
+            <li>Entra ID</li><li>Microsoft Graph</li><li>Jira SM</li><li>Slack</li><li>Signed webhooks</li>
+          </ul>
+          <a class="btn" href="/writeups/zero-touch-onboarding/">Read the case study →</a>
+        </div>
+        <ol class="flow" aria-label="Onboarding flow">
+          <li>HR submits one form</li>
+          <li>IT reviews the staged plan, approves once</li>
+          <li>Account, licence &amp; groups build themselves</li>
+          <li>Laptop reserved from stock</li>
+          <li>Training waiting on day one</li>
+        </ol>
+      </article>
+
+      <div class="cards">
+        <article class="card">
+          <h3>Bare-metal Kubernetes platform</h3>
+          <p class="card__summary">On-prem RKE2 cluster built from scratch as the home for internal apps: pull-based GitOps, backed-up storage, automatic TLS and DNS, and a local GPU for AI.</p>
+          <p class="card__tags">RKE2 · Fleet · Longhorn · GitOps · vLLM</p>
+          <a href="/writeups/bare-metal-kubernetes/" aria-label="Read the Bare-metal Kubernetes platform write-up">Read write-up →</a>
+        </article>
+        <article class="card">
+          <h3>People platform</h3>
+          <p class="card__summary">The people source of truth. Syncs from Entra ID, shows HR and Legal compliance views, and builds new-hire accounts on approval.</p>
+          <p class="card__tags">React · Node.js · Postgres · Microsoft Graph</p>
+          <a href="/writeups/people-platform/" aria-label="Read the People platform write-up">Read write-up →</a>
+        </article>
+        <article class="card">
+          <h3>IT inventory</h3>
+          <p class="card__summary">Scannable PWA for every asset and consumable: QR labels, phone scanning, shelf audits, checkouts and Jamf / Intune sync.</p>
+          <p class="card__tags">React · TypeScript · PWA · Jamf · Intune</p>
+          <a href="/writeups/it-inventory/" aria-label="Read the IT inventory write-up">Read write-up →</a>
+        </article>
+        <article class="card">
+          <h3>Learning platform</h3>
+          <p class="card__summary">Training builder, self-grading quizzes, group assignments via SCIM, Slack reminders and certificates.</p>
+          <p class="card__tags">React · TypeScript · Postgres · SCIM · Slack</p>
+          <a href="/writeups/learning-platform/" aria-label="Read the Learning platform write-up">Read write-up →</a>
+        </article>
+        <article class="card">
+          <h3>Employee hub</h3>
+          <p class="card__summary">Live room status on a TV kiosk, a searchable floor plan, an SSO app launcher and access requests.</p>
+          <p class="card__tags">React · Node.js · Microsoft Graph · Zoom</p>
+          <a href="/writeups/employee-hub/" aria-label="Read the Employee hub write-up">Read write-up →</a>
+        </article>
+        <article class="card">
+          <h3>Domain manager</h3>
+          <p class="card__summary">Every domain across three registrars in one table: expiry tracking, renewal forecasts and weekly blacklist checks.</p>
+          <p class="card__tags">TypeScript · AWS Route 53 · Scheduled jobs</p>
+          <a href="/writeups/domain-manager/" aria-label="Read the Domain manager write-up">Read write-up →</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" class="wrap section split" aria-labelledby="exp-title">
+      <div class="split__side">
+        <p class="kicker">02 · Experience</p>
+        <h2 id="exp-title" class="h2">From the help desk to leading the team</h2>
+        <a class="more-link" href="/assets/resume-full.pdf">Full two-page résumé (PDF) →</a>
+      </div>
+      <div class="split__main">
+        <article class="job">
+          <div class="job__head">
+            <h3>Systems Administrator, Team Lead · <span>Eightpoint</span></h3>
+            <p class="dates">Jan 2020 — Present</p>
+          </div>
+          <ul>
+            <li>Lead IT operations and a three-person systems administration team.</li>
+            <li>Own Microsoft 365, Entra ID and Intune, plus SSO/SAML across 60+ SaaS apps.</li>
+            <li>Designed and built a suite of internal apps (React, Node.js, Postgres, Kubernetes): people platform, IT inventory, learning platform, employee hub, domain manager.</li>
+            <li>Automated new-hire onboarding end to end, cutting provisioning from 4–6 hours to under one.</li>
+            <li>Run CI/CD to EKS and an on-prem Kubernetes platform with local AI.</li>
+          </ul>
+        </article>
+        <ul class="job-list">
+          <li class="job-row"><p><strong>Systems Administrator / Network Technician</strong> <span>· Collier County Sheriff's Office</span></p><p class="dates">2018 — 2019</p></li>
+          <li class="job-row"><p><strong>Network Engineer</strong> <span>· Softrim Corporation</span></p><p class="dates">2017 — 2018</p></li>
+          <li class="job-row"><p><strong>Systems Administrator / Network Engineer</strong> <span>· Florida Cancer Specialists</span></p><p class="dates">2017</p></li>
+          <li class="job-row"><p><strong>Network Support Engineer II</strong> <span>· Greenwire Technology Solutions</span></p><p class="dates">2016 — 2017</p></li>
+          <li class="job-row"><p><strong>Desktop Support Engineer</strong> <span>· ATOS (for Lee County)</span></p><p class="dates">2014 — 2015</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="wrap section" aria-labelledby="skills-title">
+      <div class="section-head">
+        <div>
+          <p class="kicker">03 · Skills &amp; credentials</p>
+          <h2 id="skills-title" class="h2">What I work in</h2>
+        </div>
+      </div>
+      <div class="grid-lines">
+        <div><h3>Leadership &amp; ITSM</h3><p>Team leadership, help desk management, on/offboarding, SaaS &amp; vendor management, Jira, process automation</p></div>
+        <div><h3>Identity &amp; M365</h3><p>Microsoft 365, Entra ID, Intune, Active Directory, Exchange, SSO / SAML</p></div>
+        <div><h3>Cloud &amp; infrastructure</h3><p>AWS, EKS, Azure, Google Cloud, bare-metal Kubernetes, Rancher, Docker, Argo CD</p></div>
+        <div><h3>Automation &amp; development</h3><p>PowerShell, Bash, Terraform, Node.js, TypeScript, React, Postgres, GitHub Actions</p></div>
+        <div><h3>Networking &amp; security</h3><p>TCP/IP, zero-trust VPN, WireGuard, Palo Alto, SonicWALL, UniFi, VoIP, monitoring</p></div>
+        <div><h3>Local AI</h3><p>Self-hosted models on GPU nodes (vLLM, Ollama) wired into internal tooling</p></div>
+      </div>
+      <div class="creds">
+        <div>
+          <h3 class="label">Certifications</h3>
+          <ul class="pills">
+            <li>Certified ScrumMaster (2025)</li><li>MCSA</li><li>CompTIA Server+</li><li>CompTIA Network+</li><li>CompTIA A+</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="label">Education</h3>
+          <p>Florida SouthWestern State College — Computer Science coursework, 2015–2017</p>
+          <p>Dunbar High School, Academy of Technology Excellence — 32+ industry IT certifications, the most in the 2014 class</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="writeups" class="wrap section" aria-labelledby="posts-title">
+      <div class="section-head">
+        <div>
+          <p class="kicker">04 · Write-ups</p>
+          <h2 id="posts-title" class="h2">How it's built</h2>
+        </div>
+        <a class="more-link" href="/writeups/">All write-ups →</a>
+      </div>
+      <ul class="post-list">
+        <li><a href="/writeups/zero-touch-onboarding/"><span class="post-list__title">One form to a trained new hire: automating onboarding</span><span class="post-list__sum">How one HR form and one approval replaced hours of manual setup.</span></a></li>
+        <li><a href="/writeups/bare-metal-kubernetes/"><span class="post-list__title">Bare-metal Kubernetes: the platform the apps run on</span><span class="post-list__sum">RKE2, GitOps, backed-up storage and on-prem AI.</span></a></li>
+        <li><a href="/writeups/people-platform/"><span class="post-list__title">People platform: the directory that builds the account</span><span class="post-list__sum">Directory, compliance views and an approval-gated engine.</span></a></li>
+        <li><a href="/writeups/it-inventory/"><span class="post-list__title">IT inventory: every laptop and USB stick, scannable</span><span class="post-list__sum">QR labels, phone scanning, audits in minutes, MDM sync.</span></a></li>
+      </ul>
+    </section>
+
+    <section id="contact" class="wrap section" aria-labelledby="contact-title">
+      <div class="contact">
+        <div>
+          <h2 id="contact-title" class="h2">Let's talk.</h2>
+          <p>Happy to compare notes on IT automation, identity, or running internal platforms on Kubernetes.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+          <a class="btn btn--outline" href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a>
+          <a class="btn btn--outline" href="https://github.com/CollinJDoyle">GitHub</a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <nav class="dock" aria-label="Open windows">
-    <button class="dock__btn" type="button" data-launch="about"    title="about">about</button>
-    <button class="dock__btn" type="button" data-launch="projects" title="projects">projects</button>
-    <button class="dock__btn" type="button" data-launch="resume"   title="resume">resume</button>
-    <button class="dock__btn" type="button" data-launch="blog"     title="blog">blog</button>
-    <button class="dock__btn" type="button" data-launch="contact"  title="contact">contact</button>
-    <button class="dock__btn dock__btn--accent" type="button" data-launch="terminal" title="terminal">&gt;_</button>
-  </nav>
-
-  <script src="js/data.js" defer></script>
-  <script src="js/markdown.js" defer></script>
-  <script src="js/windows.js" defer></script>
-  <script src="js/games.js" defer></script>
-  <script src="js/terminal.js" defer></script>
-  <script src="js/main.js" defer></script>
+  <footer class="site-foot">
+    <div class="wrap">
+      <p>© 2026 Collin Doyle</p>
+      <a class="term-link" href="/terminal/">collin@rocks:~$ open terminal_</a>
+    </div>
+  </footer>
 </body>
 </html>
