@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One form to a trained new hire: automating onboarding — Collin Doyle</title>
+  <meta name="description" content="One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://collin.rocks/writeups/zero-touch-onboarding/" />
+  <meta property="og:title" content="One form to a trained new hire: automating onboarding — Collin Doyle" />
+  <meta property="og:description" content="One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://collin.rocks/writeups/zero-touch-onboarding/" />
+  <meta property="og:image" content="https://collin.rocks/assets/og/zero-touch-onboarding.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://collin.rocks/assets/og/zero-touch-onboarding.png" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <script>try{var t=localStorage.getItem("collin-rocks-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"One form to a trained new hire: automating onboarding","description":"One HR form and one IT approval: the Entra account, licence, groups, mail lists, laptop reservation, Slack updates and first-week training all happen automatically.","datePublished":"2026-10-12","url":"https://collin.rocks/writeups/zero-touch-onboarding/","image":"https://collin.rocks/assets/og/zero-touch-onboarding.png","author":{"@type":"Person","name":"Collin Doyle","url":"https://collin.rocks/"}}</script>
+</head>
+<body class="page">
+  <header class="page__bar">
+    <a class="statusbar__handle" href="../../">collin@rocks</a>
+    <nav class="page__nav"><a href="../../writeups/">writeups</a><a href="../../#resume">resume</a><a href="../../">desktop →</a></nav>
+  </header>
+  <main class="page__main post-body">
+<p class="post-item__meta">2026-10-12 · Collin Doyle</p>
+<h1>One form to a trained new hire: automating employee onboarding</h1>
+<p>Onboarding a new hire used to touch five systems and three teams. HR filed a ticket, IT built the account by hand, someone remembered (or forgot) the laptop, and training lived in a shared folder. I designed and built the apps and automations that turn all of that into <strong>one HR form and one IT approval</strong>.</p>
+<p>This post is the overview. Each app has its own writeup.</p>
+<h2>The flow</h2>
+<ul><li><strong>HR submits one form</strong> in the service desk portal: name, start date, manager, team, location.</li><li><strong>Automation fans it out.</strong> A ticket rule opens a dedicated Slack channel for the hire, posts a welcome, and sends the request to my people platform as a <em>staged</em> plan.</li><li><strong>IT reviews, then clicks once.</strong> The plan is pre-filled from the form and directory rules: username, manager, licence, security groups, distribution lists, trainings. IT can adjust anything, then hit <strong>Approve &amp; create</strong>. Nothing touches the identity provider until a human approves.</li><li><strong>The account builds itself.</strong> The Entra ID user, licence, manager, groups, Exchange lists, a first-day Temporary Access Pass (encrypted, never emailed) and the employee record are all created in order. Every step is logged and can be retried.</li><li><strong>Every other app hears about it.</strong> A signed <code>employee.onboarded</code> event goes to the inventory, learning and employee hub apps.</li><li><strong>Hardware is reserved from stock.</strong> The inventory app suggests a laptop that fits the role. One click reserves it, and it's checked out on the start date.</li><li><strong>Day one, training is already waiting.</strong> The hire signs in with SSO, works through first-week training with self-grading quizzes, and earns a certificate. Their manager gets a Slack DM when they finish.</li><li><strong>Slack keeps everyone posted</strong> at each stage: staged, complete, hardware assigned, fully onboarded.</li></ul>
+<h2>How it saves time</h2>
+<ul><li><strong>New-hire provisioning dropped from 4–6 hours to under an hour</strong>, and the account itself is now a few minutes of review. Done by hand, it was 15+ separate steps across admin portals, the ticket and Slack. Now IT reads the plan, adjusts it if needed, and approves.</li><li><strong>No chasing.</strong> HR, the manager and IT watch progress in one Slack channel instead of pinging each other.</li><li><strong>No missed steps.</strong> Groups, lists and trainings come from rules, not memory, so the "forgot to add them to X" follow-up tickets disappear.</li><li><strong>Retries instead of restarts.</strong> If one step fails (a slow API, a missing permission), the run records it and IT retries just that step.</li></ul>
+<h2>How it saves money</h2>
+<ul><li><strong>Built on tools the company already pays for</strong>: the identity provider, the service desk, Slack and a Kubernetes cluster. There's no new onboarding subscription.</li><li><strong>A productive first day.</strong> The laptop, account and training are ready before the hire walks in, so nobody is paid to wait for access.</li><li><strong>Fewer security gaps.</strong> The first-day pass never sits in an inbox, every reveal is audited, and access matches the role from the start. That means less clean-up at audit time.</li></ul>
+<h2>Stack</h2>
+<ul><li><strong>Apps:</strong> Node.js, React, PostgreSQL and Prisma</li><li><strong>Identity:</strong> Microsoft Graph and Exchange Online</li><li><strong>Workflow:</strong> Jira Service Management automation and the Slack API</li><li><strong>Between services:</strong> signed webhooks</li><li><strong>Deploys:</strong> Docker, Kubernetes, Argo CD and Fleet</li></ul>
+<h2>The apps</h2>
+<ul><li><a href="../people-platform/">People platform</a>: the directory, compliance views and the onboarding engine</li><li><a href="../it-inventory/">IT inventory</a>: every asset, scannable and synced with MDM</li><li><a href="../learning-platform/">Learning platform</a>: trainings, quizzes and certificates</li><li><a href="../employee-hub/">Employee hub</a>: rooms, desks and apps in one place</li><li><a href="../domain-manager/">Domain manager</a>: every domain across three registrars</li><li><a href="../bare-metal-kubernetes/">Bare-metal Kubernetes</a>: the platform all of them run on</li></ul>
+<div class="tags"><span class="tag">Automation</span><span class="tag">Entra ID</span><span class="tag">Jira SM</span><span class="tag">Slack</span><span class="tag">Webhooks</span></div>
+<p class="page__more"><a href="../">← all writeups</a></p>
+  </main>
+  <footer class="page__foot">
+    <a href="../../">collin.rocks</a> · <a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a> · <a href="https://github.com/CollinJDoyle">GitHub</a> · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+  </footer>
+</body>
+</html>

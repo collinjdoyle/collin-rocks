@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bare-metal Kubernetes: the platform the internal apps run on — Collin Doyle</title>
+  <meta name="description" content="On-prem RKE2 cluster I built from scratch as the default home for internal apps: pull-based GitOps, nightly-backed storage, automatic TLS and DNS, hardened workloads and a local GPU for AI." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://collin.rocks/writeups/bare-metal-kubernetes/" />
+  <meta property="og:title" content="Bare-metal Kubernetes: the platform the internal apps run on — Collin Doyle" />
+  <meta property="og:description" content="On-prem RKE2 cluster I built from scratch as the default home for internal apps: pull-based GitOps, nightly-backed storage, automatic TLS and DNS, hardened workloads and a local GPU for AI." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://collin.rocks/writeups/bare-metal-kubernetes/" />
+  <meta property="og:image" content="https://collin.rocks/assets/og/bare-metal-kubernetes.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://collin.rocks/assets/og/bare-metal-kubernetes.png" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <script>try{var t=localStorage.getItem("collin-rocks-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Bare-metal Kubernetes: the platform the internal apps run on","description":"On-prem RKE2 cluster I built from scratch as the default home for internal apps: pull-based GitOps, nightly-backed storage, automatic TLS and DNS, hardened workloads and a local GPU for AI.","datePublished":"2026-10-12","url":"https://collin.rocks/writeups/bare-metal-kubernetes/","image":"https://collin.rocks/assets/og/bare-metal-kubernetes.png","author":{"@type":"Person","name":"Collin Doyle","url":"https://collin.rocks/"}}</script>
+</head>
+<body class="page">
+  <header class="page__bar">
+    <a class="statusbar__handle" href="../../">collin@rocks</a>
+    <nav class="page__nav"><a href="../../writeups/">writeups</a><a href="../../#resume">resume</a><a href="../../">desktop →</a></nav>
+  </header>
+  <main class="page__main post-body">
+<p class="post-item__meta">2026-10-12 · Collin Doyle</p>
+<h1>Bare-metal Kubernetes: the platform the internal apps run on</h1>
+<p>Every app in these writeups needs a place to run, and most of them only serve people inside the office. Paying cloud prices for always-on internal tools didn't make sense, and neither did a rack of hand-managed VMs. So I designed and built an <strong>on-prem Kubernetes platform from scratch</strong>. It's the default home for new internal apps (I've shipped 20+ since mid-2025, across this cluster and AWS), and deploying one is a pull request.</p>
+<h2>What I built</h2>
+<ul><li><strong>The cluster.</strong> RKE2, managed through Rancher, on bare metal. kube-vip hands out LoadBalancer IPs, and ingress-nginx routes traffic to each app.</li><li><strong>TLS and DNS with no hand-editing.</strong><ul><li>cert-manager issues Let's Encrypt certificates through DNS-01 challenges.</li><li>external-dns writes each app's DNS record from its ingress.</li></ul><p>A new app gets its hostname and certificate as part of its own manifests.</p></li><li><strong>Persistent storage with backups.</strong> Longhorn provides replicated block storage for databases and app data. A recurring job backs every volume up to a NAS each night and keeps a rolling week of restore points. A shared PostgreSQL gives every app its own database and role.</li><li><strong>Pull-based GitOps.</strong><ul><li>GitHub Actions runs typecheck, lint, tests, secret scanning (gitleaks) and manifest validation (kustomize + kubeconform).</li><li>It builds the image and pushes it to a container registry.</li><li>It pins the exact commit SHA into the app's manifests in a pull request.</li><li>Rancher Fleet watches git and applies the change.</li></ul><p><strong>CI never holds cluster credentials.</strong></p></li><li><strong>Rollbacks in about a minute.</strong> Reverting the pin commit puts the previous build back, and database migrations are expand-only for a release so the old version still works.</li><li><strong>Secure by default.</strong> Every app ships with:<ul><li>non-root containers with a read-only root filesystem, all capabilities dropped and seccomp on;</li><li>resource requests and limits;</li><li>startup, liveness and readiness probes;</li><li>two replicas with a disruption budget and zero-downtime rolling updates.</li></ul><p>Admin-only tools are restricted at the ingress to the office and the zero-trust VPN.</p></li><li><strong>Observability.</strong> Structured JSON logs ship from every pod to a central log platform. HTTP and cron-heartbeat monitors watch every app, and failures alert in Slack.</li><li><strong>On-prem AI next to the cluster.</strong> A GPU node serves an open-weight LLM through vLLM behind an OpenAI-compatible API, reachable only on the LAN. Tuning prefix caching gave about 5× throughput: a 73,000-record classification job now finishes in about 36 minutes, with no per-token cost and no data leaving the building.</li></ul>
+<h2>The standards behind it</h2>
+<p>A platform is only as good as what gets deployed to it, so I also wrote the <strong>engineering standards and templates</strong> every app follows, drawn from 30+ repos:</p>
+<ul><li>immutable image tags;</li><li>no secrets in git, images or frontend bundles;</li><li>SSO tokens verified properly;</li><li>health endpoints wired to probes;</li><li>real database migrations;</li><li>validated config;</li><li>a consistent manifest layout with a deploy runbook.</li></ul>
+<p>New apps start from template repos that already follow them.</p>
+<p>One rule came from experience. An early <code>:latest</code> + <code>imagePullPolicy: Always</code> setup let a restarted pod pull an image nobody had reviewed. That outage is why every deploy is now pinned to a reviewed commit.</p>
+<h2>How it saves time</h2>
+<ul><li><strong>Shipping is a merge.</strong> No SSH, no manual <code>kubectl</code>. The pipeline tests, builds, pins and deploys.</li><li><strong>New apps start in hours, not days.</strong> The template repo comes with CI, manifests, health checks and a runbook.</li><li><strong>Recovery is boring.</strong> Undo a bad deploy with a git revert, and restore lost data from last night's volume backup.</li></ul>
+<h2>How it saves money</h2>
+<ul><li><strong>Owned hardware instead of always-on cloud bills</strong> for internal tools that only need to serve the office. Heavy and long-running compute is cheaper on hardware you already own.</li><li><strong>No per-token AI costs.</strong> Large classification and labeling jobs run on a local GPU instead of a metered API.</li><li><strong>One platform for many apps.</strong> There's no per-app hosting, certificate or DNS management.</li></ul>
+<h2>Stack</h2>
+<div class="table-wrap"><table><thead><tr><th>Layer</th><th>Tech</th></tr></thead><tbody><tr><td>Cluster</td><td>RKE2, Rancher, kube-vip, ingress-nginx</td></tr><tr><td>Storage</td><td>Longhorn (replicated volumes, nightly NAS backups), PostgreSQL</td></tr><tr><td>Delivery</td><td>GitHub Actions, container registry, kustomize, kubeconform, Rancher Fleet</td></tr><tr><td>Certs &amp; DNS</td><td>cert-manager (Let's Encrypt, DNS-01), external-dns, Route 53</td></tr><tr><td>Security</td><td>gitleaks, Trufflehog, branch protection, hardened pod specs, zero-trust VPN</td></tr><tr><td>Ops</td><td>structured logging via Vector, uptime and heartbeat monitors, Slack alerts</td></tr><tr><td>AI</td><td>vLLM on a local GPU, OpenAI-compatible API</td></tr></tbody></table></div>
+<div class="tags"><span class="tag">Kubernetes</span><span class="tag">RKE2</span><span class="tag">Rancher Fleet</span><span class="tag">Longhorn</span><span class="tag">GitOps</span><span class="tag">vLLM</span></div>
+<p class="page__more"><a href="../">← all writeups</a></p>
+  </main>
+  <footer class="page__foot">
+    <a href="../../">collin.rocks</a> · <a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a> · <a href="https://github.com/CollinJDoyle">GitHub</a> · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+  </footer>
+</body>
+</html>

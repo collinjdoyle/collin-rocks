@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="tokyo-night">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee hub: rooms, desks and apps in one place — Collin Doyle</title>
+  <meta name="description" content="Live conference-room status (calendars + Zoom Rooms) on a TV kiosk, a searchable floor plan, an SSO app launcher and access requests." />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://collin.rocks/writeups/employee-hub/" />
+  <meta property="og:title" content="Employee hub: rooms, desks and apps in one place — Collin Doyle" />
+  <meta property="og:description" content="Live conference-room status (calendars + Zoom Rooms) on a TV kiosk, a searchable floor plan, an SSO app launcher and access requests." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://collin.rocks/writeups/employee-hub/" />
+  <meta property="og:image" content="https://collin.rocks/assets/og/employee-hub.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://collin.rocks/assets/og/employee-hub.png" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap&subset=latin" />
+  <link rel="stylesheet" href="../../css/styles.css" />
+  <script>try{var t=localStorage.getItem("collin-rocks-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Employee hub: rooms, desks and apps in one place","description":"Live conference-room status (calendars + Zoom Rooms) on a TV kiosk, a searchable floor plan, an SSO app launcher and access requests.","datePublished":"2026-10-12","url":"https://collin.rocks/writeups/employee-hub/","image":"https://collin.rocks/assets/og/employee-hub.png","author":{"@type":"Person","name":"Collin Doyle","url":"https://collin.rocks/"}}</script>
+</head>
+<body class="page">
+  <header class="page__bar">
+    <a class="statusbar__handle" href="../../">collin@rocks</a>
+    <nav class="page__nav"><a href="../../writeups/">writeups</a><a href="../../#resume">resume</a><a href="../../">desktop →</a></nav>
+  </header>
+  <main class="page__main post-body">
+<p class="post-item__meta">2026-10-12 · Collin Doyle</p>
+<h1>Employee hub: rooms, desks and apps in one place</h1>
+<p>Three questions eat a surprising amount of office time: <em>Is a room free? Where does that person sit? How do I get access to that app?</em> I built an employee hub that answers all three behind one sign-on.</p>
+<h2>What I built</h2>
+<ul><li><strong>Live conference-room status.</strong> The hub combines Outlook room calendars with Zoom Rooms presence to show whether each room is free or busy, what's on, and when it frees up. It appears on every employee's home page and on a TV kiosk outside the rooms. When a meeting ends, the board flips to free.</li><li><strong>Honest data.</strong> A room with no calendar shows <em>NO DATA</em>, not <em>free</em>. Telling people a room is open when you don't actually know is how they end up walking into meetings.</li><li><strong>Interactive floor plan.</strong> Search for a name, team or department and the matching desks light up.</li><li><strong>App launcher.</strong> Every SSO app you're assigned, pulled from Entra ID and one click away.</li><li><strong>Request access.</strong> For an app you don't have yet, write a justification and it becomes a service-desk ticket you can track from the hub.</li><li><strong>Read-only by design.</strong> The hub reports what rooms are doing but never books them. It holds only read permissions in the directory and mail system, which kept the security review short.</li></ul>
+<h2>How it saves time</h2>
+<ul><li><strong>Nobody walks the hallway</strong> to check rooms, and there are fewer double-booked "quick syncs."</li><li><strong>New hires find people on day one</strong> without asking around.</li><li><strong>App requests arrive complete.</strong> Each request names the app, the person and the reason, so IT doesn't have to go back and ask.</li></ul>
+<h2>How it saves money</h2>
+<ul><li><strong>Replaces commercial room-display systems</strong>, which usually charge per room per month and need dedicated tablets. This one runs on a TV the office already had.</li><li><strong>Fewer help-desk round trips</strong> asking "how do I get access to X?"</li><li><strong>Better use of existing space.</strong> Rooms don't sit empty because people assume they're taken.</li></ul>
+<h2>Stack</h2>
+<div class="table-wrap"><table><thead><tr><th>Layer</th><th>Tech</th></tr></thead><tbody><tr><td>Frontend</td><td>React 19, TypeScript, Vite, Mantine, MSAL</td></tr><tr><td>Backend</td><td>Node.js 22, Express, Sequelize, PostgreSQL</td></tr><tr><td>Integrations</td><td>Microsoft Graph (users, groups, apps, room calendars), Zoom Rooms</td></tr><tr><td>Deploy</td><td>Docker, Kubernetes</td></tr></tbody></table></div>
+<div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Microsoft Graph</span><span class="tag">Zoom</span></div>
+<p class="page__more"><a href="../">← all writeups</a></p>
+  </main>
+  <footer class="page__foot">
+    <a href="../../">collin.rocks</a> · <a href="https://www.linkedin.com/in/collinjdoyle/">LinkedIn</a> · <a href="https://github.com/CollinJDoyle">GitHub</a> · <a href="mailto:cj.doyle@outlook.com">cj.doyle@outlook.com</a>
+  </footer>
+</body>
+</html>
